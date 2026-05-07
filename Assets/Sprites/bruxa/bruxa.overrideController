@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: bruxa
+  m_Controller: {fileID: 9100000, guid: 1782c7fa0941fe24c96f8893fe6e632d, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: d464718c6ed884b47914679032af1b76, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: c89660887acd54a429c5cc9336e03b8e, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 48db4c0dbe42b614289275126e472461, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 76d7db174cc50484fb1413a3d88be631, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 07959da0bbf7431488b63f7a8658aa22, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 253222620c598bc4c904c616b79d9bf3, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 971c63f4e86fb2148be8ac2d3b284eab, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 1843cf7fc9c167442b71c111cf8c5862, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: c60db60debace4145ac3cae59d727862, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 5842e01b1c4fa1c428503e74ff2b220f, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 54bf59989a6c96c4189cd30d3fa8e4c3, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 3132dc2ba6657dd4da011fb061c857a5, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: f69ac9522513adb46836054c1310a364, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 0974130a5ce59864b8d7c63559bc42e8, type: 2}
