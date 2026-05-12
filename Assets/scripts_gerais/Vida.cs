@@ -9,74 +9,85 @@ public class Vida : MonoBehaviour
 
     // --- ESTADOS E TEMPOS ---
     public bool eBruxa = false;
+    public bool ePlayer = false; // NOVA VARIÁVEL: Marca como True no Inspector da Maia!
     public float Cooldown = 0.5f;
     private bool PodeReceberDano = true;
 
-    // --- COMPONENTES ---
+    // --- COMPONENTES E UI ---
     public Animator anim;
+    public GameObject painelGameOver; // NOVA VARIÁVEL: Arrastar o PainelGameOver para aqui
 
     void Start()
     {
-        // Inicializa a vida
         VidaAtual = VidaMax;
 
-        // Cache do Animator (procura no objeto ou nos "filhos" se estiver vazio)
         if (anim == null)
             anim = GetComponentInChildren<Animator>();
     }
 
-    // --- FUNÇÕES PÚBLICAS ---
-
     public void ReceberDano(float dano)
     {
-        // O "Guarda": Se estiver invencível, ignora o dano
         if (!PodeReceberDano) return;
 
         VidaAtual -= dano;
 
-        // Feedback visual de dano
         if (anim != null)
             anim.Play("dano");
 
-        // Verifica morte
         if (VidaAtual <= 0)
         {
             if (eBruxa)
+            {
                 FinalizarLutaBruxa();
+            }
+            else if (ePlayer) // SE FOR A MAIA QUE MORREU
+            {
+                MorrerPlayer();
+            }
             else
-                Destroy(gameObject);
+            {
+                Destroy(gameObject); // Inimigos normais (sapos) apenas desaparecem
+            }
         }
         else
         {
-            // Se não morreu, fica invencível por um curto período
             StartCoroutine(ResetarDano());
         }
     }
 
-    // --- LÓGICA ESPECÍFICA DE BOSS ---
+    // --- LÓGICA DE DERROTA DO PLAYER ---
+    void MorrerPlayer()
+    {
+        if (painelGameOver != null)
+        {
+            painelGameOver.SetActive(true); // Faz o botão aparecer
+            Time.timeScale = 0f;            // Pausa o jogo para dar efeito de morte
+        }
 
+        if (anim != null)
+            anim.Play("morte"); // Se tiveres uma animação de morte, ela toca aqui
+
+        Debug.Log("A Maia morreu. Game Over!");
+    }
+
+    // --- LÓGICA ESPECÍFICA DE BOSS ---
     void FinalizarLutaBruxa()
     {
         PodeReceberDano = false;
 
-        // 1. Para de atacar
         Inimigo scriptInimigo = GetComponent<Inimigo>();
         if (scriptInimigo != null)
             scriptInimigo.enabled = false;
 
-        // 2. Visual: Idle
         if (anim != null)
             anim.Play("idle");
 
-        // --- NOVA LINHA AQUI: LIBERTAR A BARREIRA DO PLAYER ---
         Player p = Object.FindAnyObjectByType<Player>();
         if (p != null)
         {
-            p.PodePassar = true; // Agora ela pode passar assim que a bruxa para de lutar
+            p.PodePassar = true;
         }
-        // ------------------------------------------------------
 
-        // 3. História: Iniciar Diálogo
         DialogoBruxa scriptDialogo = Object.FindAnyObjectByType<DialogoBruxa>();
         if (scriptDialogo != null)
         {
@@ -87,8 +98,6 @@ public class Vida : MonoBehaviour
             Debug.LogError("O script DialogoBruxa não foi encontrado na cena!");
         }
     }
-
-    // --- COROUTINES ---
 
     IEnumerator ResetarDano()
     {

@@ -1,54 +1,68 @@
 using UnityEngine;
+using UnityEngine.InputSystem; // Necessário para o Keyboard.current
 
 public class Inimigo : MonoBehaviour
 {
     // --- CONFIGURAÇÕES DO INIMIGO ---
     public Transform Player;
-    public float DistanciaAtaque = 0f;
-    public float IntervaloAtaque = 0f;
-    public bool eBruxaBoss = false;      // No Sapo: False | Na Bruxa: True
+    public float DistanciaAtaque = 5f;
+    public float IntervaloAtaque = 2f;
+    public bool eBruxaBoss = false;
+
+    // --- NOVA LÓGICA DE MISSÃO ---
+    public float distanciaEntrega = 3f;
+    private bool missaoFinalizada = false; // ESTAVA A FALTAR ESTA LINHA!
 
     // --- REFERÊNCIAS DE OBJETOS ---
     public GameObject SpriteAtaque;
     public GameObject Poderes;
     public Transform FirePoint;
 
-    // --- VARIÁVEIS INTERNAS (CACHE) ---
+    // --- VARIÁVEIS INTERNAS ---
     private float cronometro;
     private Animator anim;
 
     void Start()
     {
-        // 1. Cache do Animator
         if (SpriteAtaque != null)
             anim = SpriteAtaque.GetComponent<Animator>();
 
-        // 2. Busca automática do Player pela Tag
         if (Player == null)
         {
             GameObject PlayerObjeto = GameObject.FindWithTag("Player");
-            if (PlayerObjeto != null)
-            {
-                Player = PlayerObjeto.transform; // AQUI: Atribuímos o transform encontrado à variável player
-            }
+            if (PlayerObjeto != null) Player = PlayerObjeto.transform;
         }
 
-        // 3. Inicializa o cronómetro
         cronometro = IntervaloAtaque;
     }
 
     void Update()
     {
-        // Segurança: Se não houver player ou animator, o código não corre
         if (Player == null || anim == null) return;
 
-        // --- LÓGICA DE DISTÂNCIA E ATAQUE ---
         float distancia = Vector2.Distance(transform.position, Player.position);
 
-        if (distancia <= DistanciaAtaque)
+        // 1. VERIFICAR ENTREGA (Lógica corrigida para usar o script Missoes)
+        if (eBruxaBoss && !missaoFinalizada)
+        {
+            // Procuramos o teu script de missões
+            Missoes gestor = Object.FindFirstObjectByType<Missoes>();
+
+            if (gestor != null && gestor.TemDiario && distancia <= distanciaEntrega)
+            {
+                // Usando o Input System novo para garantir que funciona
+                if (Keyboard.current.eKey.wasPressedThisFrame)
+                {
+                    FinalizarMissao();
+                    return;
+                }
+            }
+        }
+
+        // 2. LÓGICA DE ATAQUE
+        if (!missaoFinalizada && distancia <= DistanciaAtaque)
         {
             cronometro += Time.deltaTime;
-
             if (cronometro >= IntervaloAtaque)
             {
                 Atacar();
@@ -57,29 +71,38 @@ public class Inimigo : MonoBehaviour
         }
         else
         {
-            // Se o player estiver longe, o inimigo fica em Idle
-            anim.Play("idle");
+            // Só fica em Idle se não estiver a atacar e a missão não tiver acabado de acabar
+            if (!missaoFinalizada) anim.Play("idle");
         }
     }
 
-    // --- MÉTODO DE ATAQUE ---
     void Atacar()
     {
         anim.Play("ataque");
-
         if (FirePoint == null || Poderes == null) return;
 
-        // Instancia a magia
         GameObject PoderesObjeto = Instantiate(Poderes, FirePoint.position, FirePoint.rotation);
-
-        // Obtém o script de magia do objeto criado
         Poderes scriptPoderes = PoderesObjeto.GetComponent<Poderes>();
 
         if (scriptPoderes != null)
         {
-            // Define o comportamento da magia com base na variável eBruxaBoss
-            // Se for sapo (false), a magia segue a lógica de linha reta do seu script magia
             scriptPoderes.eDaBruxa = eBruxaBoss;
+        }
+    }
+
+    // ESTE MÉTODO ESTAVA A FALTAR NO TEU SCRIPT!
+    void FinalizarMissao()
+    {
+        missaoFinalizada = true;
+        anim.Play("idle");
+
+        Debug.Log("Missão Concluída! Ativando Pop-up...");
+
+        // Chama o Pop-up
+        PopUpManager popup = Object.FindFirstObjectByType<PopUpManager>();
+        if (popup != null)
+        {
+            popup.MostrarPopUp();
         }
     }
 }

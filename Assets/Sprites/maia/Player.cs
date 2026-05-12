@@ -16,12 +16,13 @@ public class Player : MonoBehaviour
     {
         // Atribuímos o componente no início para o Update poder usá-lo
         animator = SpritePlayer.GetComponent<Animator>();
-    }
+}
 
     void Update()
     {
         // Definição das informações de estado da animação
         var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
 
         // --- BLOCO 1: CONTROLO DE DANO ---
         // Se a animação de dano ainda estiver a tocar, bloqueia outros movimentos
