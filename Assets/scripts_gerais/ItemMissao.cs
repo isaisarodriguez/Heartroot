@@ -27,9 +27,7 @@ public class ItemMissao : MonoBehaviour
                 p.PodePassar = true;
             }
 
-            // 3. REMOÇÃO DO ITEM
-            // O diário desaparece do mapa pois já foi recolhido
-            Destroy(gameObject);
+
         }
     }
 }
