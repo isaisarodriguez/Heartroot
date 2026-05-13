@@ -9,7 +9,7 @@ public class ItemDictionary : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
-
+        itemDictionary = new Dictionary<int, GameObject>();
         //AutoIncrementIds
         for(int i = 0; i < itemPrefabs.Count; i++) 
         { 
