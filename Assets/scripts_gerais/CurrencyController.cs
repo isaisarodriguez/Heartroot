@@ -5,7 +5,7 @@ public class CurrencyController : MonoBehaviour
 {
     public static CurrencyController Instance;
 
-    [SerializeField] private int startingGold = 100; //Starting gold for new game
+    [SerializeField] private int startingGold = 0; //Starting gold for new game
     private int playerGold = 100;
     public event Action<int> OnGoldChanged;
 

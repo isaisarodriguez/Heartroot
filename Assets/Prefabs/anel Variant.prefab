@@ -96,6 +96,18 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -3209706351291559141, guid: 75f1ee1e47a65e44bb9c6366bbfafcb2, type: 3}
+    - target: {fileID: 5614943600817525700, guid: 32b8e044561141d4bb8899db05523c7d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6716395847982809193, guid: 32b8e044561141d4bb8899db05523c7d, type: 3}
+      propertyPath: ID
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6716395847982809193, guid: 32b8e044561141d4bb8899db05523c7d, type: 3}
+      propertyPath: buyPrice
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 6949217202134402425, guid: 32b8e044561141d4bb8899db05523c7d, type: 3}
       propertyPath: m_Name
       value: anel Variant

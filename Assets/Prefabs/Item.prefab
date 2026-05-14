@@ -92,7 +92,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7cb1a931fc47784c9740d19af2f5e80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Item
-  ID: 0
+  ID: 13
+  buyPrice: 0
+  sellPriceMultiplier: 0.5
 --- !u!225 &411826874259321573
 CanvasGroup:
   m_ObjectHideFlags: 0

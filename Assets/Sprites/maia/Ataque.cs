@@ -8,6 +8,10 @@ public class Ataque : MonoBehaviour
     public GameObject Poderes;
     public Transform FirePoint;
 
+    [Header("Configurações de Áudio")]
+    public AudioSource audioSource; // Arrastar o componente Audio Source do Player para aqui
+    public AudioClip somAtaque;      // Arrastar o ficheiro de som (.wav) para aqui
+
     // --- VARIÁVEIS INTERNAS ---
     private Animator anim;
 
@@ -15,6 +19,12 @@ public class Ataque : MonoBehaviour
     {
         // Guardamos o Animator no início para não ter de o procurar em cada frame
         anim = SpriteAtaque.GetComponent<Animator>();
+
+        // Verificação de segurança caso te esqueças de arrastar o AudioSource
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
     }
 
     void Update()
@@ -40,10 +50,20 @@ public class Ataque : MonoBehaviour
         // Ativa a animação de ataque
         anim.Play("ataque");
 
+        // --- NOVO: Toca o som do ataque ---
+        if (audioSource != null && somAtaque != null)
+        {
+            audioSource.PlayOneShot(somAtaque);
+        }
+
         // Cria o projétil (Poderes) na posição e rotação do FirePoint
         GameObject PoderesObjeto = Instantiate(Poderes, FirePoint.position, FirePoint.rotation);
 
         // Acede ao script 'magia' do objeto criado e define que não é da bruxa
-        PoderesObjeto.GetComponent<Poderes>().eDaBruxa = false;
+        // Nota: Garante que o componente se chama 'Poderes' (como o prefab) ou 'magia'
+        if (PoderesObjeto.GetComponent<Poderes>() != null)
+        {
+            PoderesObjeto.GetComponent<Poderes>().eDaBruxa = false;
+        }
     }
 }

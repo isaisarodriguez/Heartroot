@@ -4,11 +4,11 @@ using UnityEngine.InputSystem;
 public class InteractionDetector : MonoBehaviour
 {
     private IInteractable interactableInRange = null;
-    public GameObject InteractionIcon; 
+   // public GameObject InteractionIcon; 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        InteractionIcon.SetActive(false);
+     //   InteractionIcon.SetActive(false);
     }
 
     public void OnInteract(InputAction.CallbackContext context)
@@ -24,7 +24,7 @@ public class InteractionDetector : MonoBehaviour
         if(collision.TryGetComponent(out IInteractable interactable) && interactable.CanInteract())
         {
             interactableInRange = interactable;
-            InteractionIcon.SetActive(true);
+        //    InteractionIcon.SetActive(true);
         }
     }
 
@@ -33,7 +33,7 @@ public class InteractionDetector : MonoBehaviour
         if (collision.TryGetComponent(out IInteractable interactable) && interactable == interactableInRange)
         {
             interactableInRange = null;
-            InteractionIcon.SetActive(false);
+        //    InteractionIcon.SetActive(false);
         }
     }
 }

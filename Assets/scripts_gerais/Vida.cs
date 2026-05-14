@@ -9,13 +9,18 @@ public class Vida : MonoBehaviour
 
     // --- ESTADOS E TEMPOS ---
     public bool eBruxa = false;
-    public bool ePlayer = false; // NOVA VARIÁVEL: Marca como True no Inspector da Maia!
+    public bool ePlayer = false;
     public float Cooldown = 0.5f;
     private bool PodeReceberDano = true;
 
     // --- COMPONENTES E UI ---
     public Animator anim;
-    public GameObject painelGameOver; // NOVA VARIÁVEL: Arrastar o PainelGameOver para aqui
+    public GameObject painelGameOver;
+
+    // --- ÁUDIO (ADICIONADO) ---
+    [Header("Sons")]
+    public AudioSource audioSource;
+    public AudioClip somMorte;
 
     void Start()
     {
@@ -23,6 +28,10 @@ public class Vida : MonoBehaviour
 
         if (anim == null)
             anim = GetComponentInChildren<Animator>();
+
+        // Tenta encontrar o AudioSource automaticamente se não arrastares
+        if (audioSource == null)
+            audioSource = GetComponent<AudioSource>();
     }
 
     public void ReceberDano(float dano)
@@ -40,13 +49,13 @@ public class Vida : MonoBehaviour
             {
                 FinalizarLutaBruxa();
             }
-            else if (ePlayer) // SE FOR A MAIA QUE MORREU
+            else if (ePlayer)
             {
                 MorrerPlayer();
             }
             else
             {
-                Destroy(gameObject); // Inimigos normais (sapos) apenas desaparecem
+                Destroy(gameObject);
             }
         }
         else
@@ -58,14 +67,22 @@ public class Vida : MonoBehaviour
     // --- LÓGICA DE DERROTA DO PLAYER ---
     void MorrerPlayer()
     {
+        // 1. Toca o som de morte (antes da pausa)
+        if (audioSource != null && somMorte != null)
+        {
+            // Definimos para ignorar a pausa, caso o som seja longo
+            audioSource.ignoreListenerPause = true;
+            audioSource.PlayOneShot(somMorte);
+        }
+
         if (painelGameOver != null)
         {
-            painelGameOver.SetActive(true); // Faz o botão aparecer
-            Time.timeScale = 0f;            // Pausa o jogo para dar efeito de morte
+            painelGameOver.SetActive(true);
+            Time.timeScale = 0f; // Pausa o jogo
         }
 
         if (anim != null)
-            anim.Play("morte"); // Se tiveres uma animação de morte, ela toca aqui
+            anim.Play("morte");
 
         Debug.Log("A Maia morreu. Game Over!");
     }
