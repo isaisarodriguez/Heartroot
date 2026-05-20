@@ -44,44 +44,44 @@ public class Player : MonoBehaviour
         // --- BLOCO 3: MOVIMENTAÇÃO E ANIMAÇÕES DE DIREÇÃO ---
 
         // Esquerda
-        if (Keyboard.current.aKey.wasPressedThisFrame)
-        {
-            animator.Play("esq");
-        }
-        if (Keyboard.current.aKey.isPressed)
-        {
-            this.transform.Translate(-Velocidade * Time.deltaTime, 0, 0);
-        }
+        //if (Keyboard.current.aKey.wasPressedThisFrame)
+        // {
+        //   animator.Play("esq");
+        // }
+        //  if (Keyboard.current.aKey.isPressed)
+        //  {
+        //   this.transform.Translate(-Velocidade * Time.deltaTime, 0, 0);
+        // }
 
         // Direita
-        if (Keyboard.current.dKey.wasPressedThisFrame)
-        {
-            animator.Play("dir");
-        }
-        if (Keyboard.current.dKey.isPressed)
-        {
-            this.transform.Translate(Velocidade * Time.deltaTime, 0, 0);
-        }
+        // if (Keyboard.current.dKey.wasPressedThisFrame)
+        //{
+        // animator.Play("dir");
+        // }
+        // if (Keyboard.current.dKey.isPressed)
+        // {
+        // this.transform.Translate(Velocidade * Time.deltaTime, 0, 0);
+        // }
 
         // Cima
-        if (Keyboard.current.wKey.wasPressedThisFrame)
-        {
-            animator.Play("cima");
-        }
-        if (Keyboard.current.wKey.isPressed)
-        {
-            this.transform.Translate(0, Velocidade * Time.deltaTime, 0);
-        }
+        //   if (Keyboard.current.wKey.wasPressedThisFrame)
+        //  {
+        //  animator.Play("cima");
+        // }
+        //  if (Keyboard.current.wKey.isPressed)
+        //  {
+        //  this.transform.Translate(0, Velocidade * Time.deltaTime, 0);
+        // }
 
         // Baixo
-        if (Keyboard.current.sKey.wasPressedThisFrame)
-        {
-            animator.Play("baixo");
-        }
-        if (Keyboard.current.sKey.isPressed)
-        {
-            this.transform.Translate(0, -Velocidade * Time.deltaTime, 0);
-        }
+        //  if (Keyboard.current.sKey.wasPressedThisFrame)
+        //  {
+        //   animator.Play("baixo");
+        //}
+        // if (Keyboard.current.sKey.isPressed)
+        //  {
+        //  this.transform.Translate(0, -Velocidade * Time.deltaTime, 0);
+        // }
 
         // --- BLOCO 4: LIMITES DO CENÁRIO ---
         if (!PodePassar) // O "!" significa NÃO. Ou seja, se a permissão for falsa.
