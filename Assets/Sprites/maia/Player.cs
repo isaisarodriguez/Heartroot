@@ -6,32 +6,37 @@ public class Player : MonoBehaviour
 {
     // --- VARIÁVEIS ---
     public GameObject SpritePlayer;
-    public float Velocidade = 0f;
-    public float limiteX = 0f;
+    public float Velocidade = 4f; // Unido com o teu moveSpeed antigo (podes ajustar no Inspector)
+    public float limiteX = -20f;  // Mantive o teu valor padrão de -20
     public bool PodePassar = false;
-    
 
-    // Variável para guardar o Animator e não ter de o repetir sempre
+    // --- COMPONENTES E SISTEMA INTERNO ---
     private Animator animator;
+    private Rigidbody2D rb;
+    private Vector2 moveInput;
 
     void Start()
     {
-        // Atribuímos o componente no início para o Update poder usá-lo
+        // Atribuímos os componentes no início para o Update/FixedUpdate poderem usá-los
+        rb = GetComponent<Rigidbody2D>();
+
         animator = SpritePlayer.GetComponent<Animator>();
-        
-}
+        if (animator == null)
+        {
+            animator = GetComponentInChildren<Animator>();
+        }
+    }
 
     void Update()
-    { 
-
+    {
         // Definição das informações de estado da animação
         var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-
 
         // --- BLOCO 1: CONTROLO DE DANO ---
         // Se a animação de dano ainda estiver a tocar, bloqueia outros movimentos
         if (stateInfo.IsName("dano") && stateInfo.normalizedTime < 1.0f)
         {
+            rb.linearVelocity = Vector2.zero; // Garante que ela para ao levar dano
             return;
         }
 
@@ -45,47 +50,32 @@ public class Player : MonoBehaviour
             }
         }
 
-        // --- BLOCO 3: MOVIMENTAÇÃO E ANIMAÇÕES DE DIREÇÃO ---
+        // --- BLOCO 3: ANIMAÇÕES DE DIREÇÃO ---
+        // (Mantivemos o teu sistema original por cliques que disseste que já funciona!)
 
         // Esquerda
         if (Keyboard.current.aKey.wasPressedThisFrame)
-         {
-           animator.Play("esq");
-         }
-          if (Keyboard.current.aKey.isPressed)
-          {
-           this.transform.Translate(-Velocidade * Time.deltaTime, 0, 0);
-         }
+        {
+            animator.Play("esq");
+        }
 
         // Direita
-         if (Keyboard.current.dKey.wasPressedThisFrame)
+        if (Keyboard.current.dKey.wasPressedThisFrame)
         {
-             animator.Play("dir");
-         }
-         if (Keyboard.current.dKey.isPressed)
-         {
-         this.transform.Translate(Velocidade * Time.deltaTime, 0, 0);
-         }
+            animator.Play("dir");
+        }
 
-         //Cima
-           if (Keyboard.current.wKey.wasPressedThisFrame)
-          {
-          animator.Play("cima");
-         }
-          if (Keyboard.current.wKey.isPressed)
-          {
-          this.transform.Translate(0, Velocidade * Time.deltaTime, 0);
-         }
+        // Cima
+        if (Keyboard.current.wKey.wasPressedThisFrame)
+        {
+            animator.Play("cima");
+        }
 
         // Baixo
-          if (Keyboard.current.sKey.wasPressedThisFrame)
-          {
-           animator.Play("baixo");
+        if (Keyboard.current.sKey.wasPressedThisFrame)
+        {
+            animator.Play("baixo");
         }
-         if (Keyboard.current.sKey.isPressed)
-          {
-          this.transform.Translate(0, -Velocidade * Time.deltaTime, 0);
-         }
 
         // --- BLOCO 4: LIMITES DO CENÁRIO ---
         if (!PodePassar) // O "!" significa NÃO. Ou seja, se a permissão for falsa.
@@ -97,5 +87,22 @@ public class Player : MonoBehaviour
         }
     }
 
-}    
+    // --- MOVIMENTO POR FÍSICA (Substituiu o Translate para evitar bugs) ---
+    void FixedUpdate()
+    {
+        // Lemos as teclas WASD para criar o vetor de movimento
+        float moverX = 0f;
+        float moverY = 0f;
+
+        if (Keyboard.current.aKey.isPressed) moverX = -1f;
+        if (Keyboard.current.dKey.isPressed) moverX = 1f;
+        if (Keyboard.current.wKey.isPressed) moverY = 1f;
+        if (Keyboard.current.sKey.isPressed) moverY = -1f;
+
+        moveInput = new Vector2(moverX, moverY).normalized;
+
+        // Aplica a velocidade no Rigidbody2D de forma suave
+        rb.linearVelocity = moveInput * Velocidade;
+    }
+}
 

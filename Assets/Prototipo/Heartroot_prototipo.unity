@@ -5674,7 +5674,6 @@ GameObject:
   - component: {fileID: 905250844}
   - component: {fileID: 905250845}
   - component: {fileID: 905250846}
-  - component: {fileID: 905250847}
   - component: {fileID: 905250848}
   m_Layer: 0
   m_Name: Player
@@ -5878,7 +5877,7 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 905250847}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MaiaMovimento, Assembly-CSharp
         m_MethodName: Move
         m_Mode: 0
@@ -6082,19 +6081,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &905250847
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 905250837}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9fac710220dbe0f4a8f9853cb9e6e98a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  moveSpeed: 4
 --- !u!95 &905250848
 Animator:
   serializedVersion: 7
