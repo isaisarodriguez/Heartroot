@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,6 +9,7 @@ public class Player : MonoBehaviour
     public float Velocidade = 0f;
     public float limiteX = 0f;
     public bool PodePassar = false;
+    
 
     // Variável para guardar o Animator e não ter de o repetir sempre
     private Animator animator;
@@ -16,10 +18,12 @@ public class Player : MonoBehaviour
     {
         // Atribuímos o componente no início para o Update poder usá-lo
         animator = SpritePlayer.GetComponent<Animator>();
+        
 }
 
     void Update()
-    {
+    { 
+
         // Definição das informações de estado da animação
         var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
@@ -92,4 +96,6 @@ public class Player : MonoBehaviour
             }
         }
     }
-}
+
+}    
+
