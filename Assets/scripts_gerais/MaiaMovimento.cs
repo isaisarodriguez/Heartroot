@@ -11,7 +11,7 @@ public class MaiaMovimento : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     // Update is called once per frame
@@ -30,6 +30,7 @@ public class MaiaMovimento : MonoBehaviour
         animator.SetBool("isWalking", true);
         if (context.canceled)
         {
+            moveInput = context.ReadValue<Vector2>();
             animator.SetBool("isWalking", false);
             animator.SetFloat("LastInputX", moveInput.x);
             animator.SetFloat("LastInputY", moveInput.y);
