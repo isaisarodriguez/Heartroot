@@ -78,7 +78,31 @@ public class DialogoBruxa : MonoBehaviour
         Player p = Object.FindAnyObjectByType<Player>();
         Ataque a = Object.FindAnyObjectByType<Ataque>();
 
-        if (p != null) p.enabled = !bloquear;
+        if (p != null)
+        {
+            p.enabled = !bloquear;
+
+            // CORREÇÃO: Procura o Rigidbody2D no objeto ou nos componentes acima/abaixo dele
+            Rigidbody2D rb = p.GetComponent<Rigidbody2D>();
+            if (rb == null)
+            {
+                rb = p.GetComponentInParent<Rigidbody2D>();
+            }
+
+            // Se encontrar o Rigidbody e for para bloquear, trava a física
+            if (rb != null && bloquear)
+            {
+                rb.linearVelocity = Vector2.zero; // Trava o movimento imediatamente
+            }
+
+            // Força a animação de IDLE para ela não ficar a "correr sem sair do sítio"
+            Animator anim = p.GetComponentInChildren<Animator>();
+            if (anim != null && bloquear)
+            {
+                anim.Play("idle");
+            }
+        }
+
         if (a != null) a.enabled = !bloquear;
     }
 

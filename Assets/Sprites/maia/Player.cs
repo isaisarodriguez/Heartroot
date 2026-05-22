@@ -78,13 +78,13 @@ public class Player : MonoBehaviour
         }
 
         // --- BLOCO 4: LIMITES DO CENÁRIO ---
-        if (!PodePassar) // O "!" significa NÃO. Ou seja, se a permissão for falsa.
-        {
-            if (transform.position.x < limiteX)
-            {
-                transform.position = new Vector3(limiteX, transform.position.y, transform.position.z);
-            }
-        }
+        // if (!PodePassar) // O "!" significa NÃO. Ou seja, se a permissão for falsa.
+        //    {
+        //    if (transform.position.x < limiteX)
+        //    {
+        //   transform.position = new Vector3(limiteX, transform.position.y, transform.position.z);
+        // }
+        // }
     }
 
     // --- MOVIMENTO POR FÍSICA (Substituiu o Translate para evitar bugs) ---
