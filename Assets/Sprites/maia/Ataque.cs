@@ -38,7 +38,7 @@ public class Ataque : MonoBehaviour
 
         // 2. INPUT DO JOGADOR
         // Verifica se a tecla Espaço foi pressionada neste frame
-        if (Keyboard.current.spaceKey.wasPressedThisFrame)
+        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
             PlayAtaque();
         }
