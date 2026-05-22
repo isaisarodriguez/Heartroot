@@ -1,10 +1,8 @@
-using UnityEngine;
-using TMPro;
+Ôªøusing UnityEngine;
 using System.Collections.Generic;
 
 public class Missoes : MonoBehaviour
 {
-    // --- CLASSES AUXILIARES ---
     [System.Serializable]
     public class Missao
     {
@@ -13,22 +11,31 @@ public class Missoes : MonoBehaviour
         public bool completada;
     }
 
-    // --- REFER NCIAS DE UI ---
     public GameObject PainelMissoes;
-    public TextMeshProUGUI TextoMissoes;
 
     // --- DADOS E ESTADOS ---
-    public List<Missao> missoes = new List<Missao>();
+    public List<Missao> missoes = new List<Missao>(); // Miss√µes antigas
     public bool TemDiario = false;
+
+    [Header("Sistema de Scriptable Objects (V√≠deo)")]
+    public List<QuestProgress> missoesAtivasSO = new List<QuestProgress>();
+
+    // Inst√¢ncia est√°tica para o QuestUI conseguir aceder facilmente √†s miss√µes de qualquer lado
+    public static Missoes Instance { get; private set; }
+
+    void Awake()
+    {
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+    }
 
     void Start()
     {
-        // Garante que o painel comeÁa fechado
         if (PainelMissoes != null)
             PainelMissoes.SetActive(false);
     }
 
-    // --- GEST√O DE MISS’ES ---
+    // --- GEST√ÉO DE MISS√ïES ---
 
     public void AceitarMissao(string nomeMissao)
     {
@@ -40,10 +47,9 @@ public class Missoes : MonoBehaviour
                 break;
             }
         }
-        AtualizarInterface();
+        NotificarUI();
     }
 
-    // FunÁ„o que o Di·rio chama para finalizar tudo de uma vez
     public void CompletarMissaoDireto(string nomeMissao)
     {
         TemDiario = true;
@@ -51,15 +57,28 @@ public class Missoes : MonoBehaviour
         {
             if (m.nome == nomeMissao)
             {
-                m.aceite = true; // Garante que aparece na lista
+                m.aceite = true;
                 m.completada = true;
-                break; // Adicionado para performance
+                break;
             }
         }
-        AtualizarInterface();
+        NotificarUI();
     }
 
-    // --- CONTROLO DO PAINEL (UI) ---
+    public void AceitarMissaoSO(Quest novaQuest)
+    {
+        if (novaQuest == null) return;
+
+        foreach (var progresso in missoesAtivasSO)
+        {
+            if (progresso.questID == novaQuest.questID) return;
+        }
+
+        QuestProgress novoProgresso = new QuestProgress(novaQuest);
+        missoesAtivasSO.Add(novoProgresso);
+
+        NotificarUI();
+    }
 
     public void AlternarPainel()
     {
@@ -68,24 +87,17 @@ public class Missoes : MonoBehaviour
         bool estadoAtual = PainelMissoes.activeSelf;
         PainelMissoes.SetActive(!estadoAtual);
 
-        // Se abriu o painel, atualiza o texto
         if (PainelMissoes.activeSelf)
-            AtualizarInterface();
+            NotificarUI();
     }
 
-    void AtualizarInterface()
+    // Avisa o script QuestUI para redesenhar o ecr√£
+    private void NotificarUI()
     {
-        if (TextoMissoes == null) return;
-
-        TextoMissoes.text = "MISS’ES\n";
-
-        foreach (var m in missoes)
+        QuestUI ui = FindFirstObjectByType<QuestUI>();
+        if (ui != null)
         {
-            if (m.aceite)
-            {
-                string status = m.completada ? "[CONCLUÕDO] " : "[EM CURSO] ";
-                TextoMissoes.text += status + m.nome + "\n";
-            }
+            ui.UpdateQuestUI();
         }
     }
 }
