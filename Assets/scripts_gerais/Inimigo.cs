@@ -51,8 +51,9 @@ public class Inimigo : MonoBehaviour
             if (gestor != null && gestor.TemDiario && distancia <= distanciaEntrega)
             {
                 // Usando o Input System novo para garantir que funciona
-                if (Keyboard.current.eKey.wasPressedThisFrame)
+                if (Keyboard.current.qKey.wasPressedThisFrame)
                 {
+                    print("feito");
                     FinalizarMissao();
                     return;
                 }

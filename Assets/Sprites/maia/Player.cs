@@ -65,6 +65,11 @@ public class Player : MonoBehaviour
             animator.Play("dir");
         }
 
+        if (Keyboard.current.dKey.wasPressedThisFrame && Keyboard.current.wKey.wasPressedThisFrame)
+        {
+            animator.Play("dir");
+        }
+
         // Cima
         if (Keyboard.current.wKey.wasPressedThisFrame)
         {

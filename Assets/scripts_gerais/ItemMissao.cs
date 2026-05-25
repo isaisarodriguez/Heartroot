@@ -4,6 +4,7 @@ public class ItemMissao : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log("DIÁRIO RECOLHIDO! Missão concluída e caminho livre.");
         // Verifica se quem tocou no item foi o Jogador
         if (collision.CompareTag("Player"))
         {
