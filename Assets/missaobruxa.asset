@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc7a8fe5ebd8eba4889d2a2c2c2c40a5, type: 3}
   m_Name: missaobruxa
   m_EditorClassIdentifier: Assembly-CSharp::Quest
-  questID: _14e9d778-8f86-4dca-a427-31b94a015471
+  questID: missao_bruxa
   questName: "Miss\xE3oBruxa"
   description: "Tens de recuperar o di\xE1rio da Bruxa!!"
   objectives:

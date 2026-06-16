@@ -1488,8 +1488,8 @@ RectTransform:
   m_GameObject: {fileID: 270305901}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 1.5, y: 1.27, z: 1.5}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1296065870}
   - {fileID: 112209295}
@@ -17604,7 +17604,7 @@ MonoBehaviour:
   questEntryPrefab: {fileID: 1085102450559554235, guid: b02114d82957d8249a8e29fabb6d0226, type: 3}
   objectiveTextPrefab: {fileID: 5961889501423470816, guid: e906233215268924ba3c960a3d8ae38d, type: 3}
   testQuest: {fileID: 11400000, guid: e4f1771094bf02444b0f49f9a63ce20d, type: 2}
-  testQuestAmount: 1
+  testQuestAmount: 0
 --- !u!1 &2023279431
 GameObject:
   m_ObjectHideFlags: 0

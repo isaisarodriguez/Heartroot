@@ -12,15 +12,12 @@ public class Missoes : MonoBehaviour
     }
 
     public GameObject PainelMissoes;
-
-    // --- DADOS E ESTADOS ---
-    public List<Missao> missoes = new List<Missao>(); // Missões antigas
+    public List<Missao> missoes = new List<Missao>();
     public bool TemDiario = false;
 
-    [Header("Sistema de Scriptable Objects (Vídeo)")]
+    [Header("Sistema de Scriptable Objects")]
     public List<QuestProgress> missoesAtivasSO = new List<QuestProgress>();
 
-    // Instância estática para o QuestUI conseguir aceder facilmente às missões de qualquer lado
     public static Missoes Instance { get; private set; }
 
     void Awake()
@@ -34,8 +31,6 @@ public class Missoes : MonoBehaviour
         if (PainelMissoes != null)
             PainelMissoes.SetActive(false);
     }
-
-    // --- GESTÃO DE MISSÕES ---
 
     public void AceitarMissao(string nomeMissao)
     {
@@ -77,12 +72,13 @@ public class Missoes : MonoBehaviour
         QuestProgress novoProgresso = new QuestProgress(novaQuest);
         missoesAtivasSO.Add(novoProgresso);
 
-        NotificarUI();
-        QuestUI ui = Object.FindAnyObjectByType<QuestUI>();
-        if (ui != null)
+        // FORÇA O PAINEL ROXO A ABRIR AUTOMATICAMENTE (Remover se preferires que o jogador abra com uma tecla)
+        if (PainelMissoes != null)
         {
-            ui.UpdateQuestUI();
+            PainelMissoes.SetActive(true);
         }
+
+        NotificarUI();
     }
 
     public void AlternarPainel()
@@ -92,19 +88,17 @@ public class Missoes : MonoBehaviour
         bool estadoAtual = PainelMissoes.activeSelf;
         PainelMissoes.SetActive(!estadoAtual);
 
-        // Se o painel foi ABERTO, congela o jogo. Se foi FECHADO, descongela.
         if (PainelMissoes.activeSelf)
         {
-            Time.timeScale = 0f; // Para o jogo completamente
+            Time.timeScale = 0f;
             NotificarUI();
         }
         else
         {
-            Time.timeScale = 1f; // Devolve o jogo à velocidade normal
+            Time.timeScale = 1f;
         }
     }
 
-    // Avisa o script QuestUI para redesenhar o ecrã
     private void NotificarUI()
     {
         QuestUI ui = FindFirstObjectByType<QuestUI>();

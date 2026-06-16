@@ -23,4 +23,4 @@ MonoBehaviour:
   - "As\xE9rio?? Podes-me ajudar? Obrigada, a s\xE9rio!!"
   questInProgressIndex: 0
   questCompletedIndex: 0
-  quest: {fileID: 0}
+  quest: {fileID: 11400000, guid: e4f1771094bf02444b0f49f9a63ce20d, type: 2}
