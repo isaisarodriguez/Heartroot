@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class InventoryController : MonoBehaviour
@@ -8,6 +9,7 @@ public class InventoryController : MonoBehaviour
     public GameObject[] itemPrefabs;
 
     public static InventoryController Instance { get; private set; }
+    Dictionary<int, int> itemsCountCache = new();
     private void Awake()
     {
         if(Instance != null && Instance != this)
