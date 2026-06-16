@@ -129,7 +129,7 @@ GameObject:
   - component: {fileID: 8482918947957208417}
   - component: {fileID: 8114530139088618306}
   m_Layer: 5
-  m_Name: texto_missoes
+  m_Name: QuestNameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

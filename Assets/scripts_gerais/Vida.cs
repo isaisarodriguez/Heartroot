@@ -90,6 +90,9 @@ public class Vida : MonoBehaviour
     // --- LÓGICA ESPECÍFICA DE BOSS ---
     void FinalizarLutaBruxa()
     {
+        // DEBUG 1: Confirma se o código entrou nesta função ao zerar a vida
+        Debug.Log("[SISTEMA] Vida da Bruxa chegou a zero! A iniciar FinalizarLutaBruxa()...");
+
         PodeReceberDano = false;
 
         Inimigo scriptInimigo = GetComponent<Inimigo>();
@@ -105,14 +108,20 @@ public class Vida : MonoBehaviour
             p.PodePassar = true;
         }
 
+        // DEBUG 2: Avisa que vai começar a procurar o script de diálogo na cena
+        Debug.Log("[SISTEMA] A procurar o script DialogoBruxa na cena...");
+
         DialogoBruxa scriptDialogo = Object.FindAnyObjectByType<DialogoBruxa>();
         if (scriptDialogo != null)
         {
-            scriptDialogo.IniciarDialogo();
+            // DEBUG 3: Encontrou o script e vai dar a ordem para abrir a janela
+            Debug.Log("[SISTEMA] DialogoBruxa encontrado com sucesso! A chamar AtivarDialogoPosDerrota().");
+            scriptDialogo.AtivarDialogoPosDerrota();
         }
         else
         {
-            Debug.LogError("O script DialogoBruxa não foi encontrado na cena!");
+            // Se falhar e não encontrar o script, avisa a vermelho na Console
+            Debug.LogError("[ERRO] O script DialogoBruxa não foi encontrado em NENHUM objeto ativo da cena!");
         }
     }
 

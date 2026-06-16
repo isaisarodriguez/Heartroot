@@ -5,19 +5,19 @@ using System.Collections.Generic;
 public class QuestUI : MonoBehaviour
 {
     [Header("Configurações de UI (Minuto 09:05)")]
-    public Transform questListContent;          // O objeto 'Content' do teu Scroll View
-    public GameObject questEntryPrefab;         // O Prefab da caixinha da Missão
-    public GameObject objectiveTextPrefab;      // O Prefab do texto do Objetivo
+    public Transform questListContent;         
+    public GameObject questEntryPrefab;         
+    public GameObject objectiveTextPrefab;     
 
     [Header("Configurações de Teste (Minuto 09:25)")]
     public Quest testQuest;
-    public int testQuestAmount = 3;
+    public int testQuestAmount;
 
-    private List<QuestProgress> testQuests = new List<QuestProgress>();
+    private List<QuestProgress> testQuests = new();
 
     void Start()
     {
-        // Cria as missões de teste exatamente como no minuto 10:14
+        
         if (testQuest != null)
         {
             for (int i = 0; i < testQuestAmount; i++)

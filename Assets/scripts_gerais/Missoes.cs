@@ -78,6 +78,11 @@ public class Missoes : MonoBehaviour
         missoesAtivasSO.Add(novoProgresso);
 
         NotificarUI();
+        QuestUI ui = Object.FindAnyObjectByType<QuestUI>();
+        if (ui != null)
+        {
+            ui.UpdateQuestUI();
+        }
     }
 
     public void AlternarPainel()
@@ -87,8 +92,16 @@ public class Missoes : MonoBehaviour
         bool estadoAtual = PainelMissoes.activeSelf;
         PainelMissoes.SetActive(!estadoAtual);
 
+        // Se o painel foi ABERTO, congela o jogo. Se foi FECHADO, descongela.
         if (PainelMissoes.activeSelf)
+        {
+            Time.timeScale = 0f; // Para o jogo completamente
             NotificarUI();
+        }
+        else
+        {
+            Time.timeScale = 1f; // Devolve o jogo à velocidade normal
+        }
     }
 
     // Avisa o script QuestUI para redesenhar o ecrã

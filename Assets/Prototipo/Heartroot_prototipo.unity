@@ -1488,8 +1488,8 @@ RectTransform:
   m_GameObject: {fileID: 270305901}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1296065870}
   - {fileID: 112209295}
@@ -2312,6 +2312,143 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 373657468}
   m_CullTransparentMesh: 1
+--- !u!1 &378092670
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 378092671}
+  - component: {fileID: 378092673}
+  - component: {fileID: 378092672}
+  m_Layer: 5
+  m_Name: falas_dialogo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &378092671
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 378092670}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.76, y: 1.76, z: 1.76}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 432922770}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 310, y: -49.75}
+  m_SizeDelta: {x: 288.3, y: 86.879}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &378092672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 378092670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: texto
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 0fe9091cbb0db914fbfb12251209f508, type: 2}
+  m_sharedMaterial: {fileID: 7452532499363520239, guid: 0fe9091cbb0db914fbfb12251209f508, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 16
+  m_fontSizeBase: 16
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_characterHorizontalScale: 1
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 21.873686, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &378092673
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 378092670}
+  m_CullTransparentMesh: 1
 --- !u!224 &404107363 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2002583715448612481, guid: 74e89f8a93fced649b365bf6fa5997de, type: 3}
@@ -2446,6 +2583,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 997183646}
+  - {fileID: 378092671}
   m_Father: {fileID: 308876014}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2497,7 +2635,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1918657448}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: DialogoBruxa, Assembly-CSharp
         m_MethodName: ProximaFrase
         m_Mode: 1
@@ -6671,7 +6809,7 @@ GameObject:
   - component: {fileID: 997183648}
   - component: {fileID: 997183647}
   m_Layer: 5
-  m_Name: falas_dialogo
+  m_Name: nome_bruxa
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6686,15 +6824,15 @@ RectTransform:
   m_GameObject: {fileID: 997183645}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.76, y: 1.76, z: 1.76}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 432922770}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 500, y: 80}
+  m_AnchoredPosition: {x: 197.6, y: 25.9}
+  m_SizeDelta: {x: 482.6, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &997183647
 MonoBehaviour:
@@ -6716,7 +6854,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: Bruxa
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0fe9091cbb0db914fbfb12251209f508, type: 2}
   m_sharedMaterial: {fileID: 7452532499363520239, guid: 0fe9091cbb0db914fbfb12251209f508, type: 2}
@@ -8438,6 +8576,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1203318266}
   - component: {fileID: 1203318267}
+  - component: {fileID: 1203318270}
   - component: {fileID: 1203318268}
   - component: {fileID: 1203318269}
   m_Layer: 0
@@ -8550,6 +8689,23 @@ MonoBehaviour:
   painelGameOver: {fileID: 0}
   audioSource: {fileID: 0}
   somMorte: {fileID: 0}
+--- !u!114 &1203318270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1203318265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1020b3c102530f84ea27e9ab6410e954, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DialogoBruxa
+  painelDialogo: {fileID: 432922769}
+  textoDialogo: {fileID: 378092672}
+  nomeNPCTexto: {fileID: 997183647}
+  retratoNPCImage: {fileID: 0}
+  dialogoDaBruxa: {fileID: 11400000, guid: d8421af7cd506a1418799555087fcf4e, type: 2}
 --- !u!1 &1221544529
 GameObject:
   m_ObjectHideFlags: 0
@@ -15634,6 +15790,7 @@ GameObject:
   - component: {fileID: 1694668785}
   - component: {fileID: 1694668786}
   - component: {fileID: 1694668787}
+  - component: {fileID: 1694668788}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -15688,6 +15845,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   startingGold: 0
+--- !u!114 &1694668788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1694668784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fadbe638b4471b4f9f8f82b79ff6f78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  activateQuests: []
 --- !u!1 &1699992139
 GameObject:
   m_ObjectHideFlags: 0
@@ -17053,7 +17223,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1918657447}
   - component: {fileID: 1918657449}
-  - component: {fileID: 1918657448}
   m_Layer: 0
   m_Name: Missoes
   m_TagString: Untagged
@@ -17076,23 +17245,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1918657448
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1918657445}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1020b3c102530f84ea27e9ab6410e954, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DialogoBruxa
-  PainelDialogo: {fileID: 432922769}
-  TextoDialogo: {fileID: 997183647}
-  NomeTexto: {fileID: 0}
-  RetratoImagem: {fileID: 0}
-  DadosDialogo: {fileID: 0}
 --- !u!114 &1918657449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17451,7 +17603,7 @@ MonoBehaviour:
   questListContent: {fileID: 1404520122}
   questEntryPrefab: {fileID: 1085102450559554235, guid: b02114d82957d8249a8e29fabb6d0226, type: 3}
   objectiveTextPrefab: {fileID: 5961889501423470816, guid: e906233215268924ba3c960a3d8ae38d, type: 3}
-  testQuest: {fileID: 11400000, guid: 90e6bbf8b837a1045b70c52fe4b08a77, type: 2}
+  testQuest: {fileID: 11400000, guid: e4f1771094bf02444b0f49f9a63ce20d, type: 2}
   testQuestAmount: 1
 --- !u!1 &2023279431
 GameObject:
@@ -44188,7 +44340,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 805665008}
   m_HandleRect: {fileID: 805665007}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:

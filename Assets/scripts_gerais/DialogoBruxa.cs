@@ -1,171 +1,99 @@
 using UnityEngine;
 using TMPro;
-using UnityEngine.UI; // NECESSÁRIO para usar o componente Image do retrato
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using System.Collections; // NECESSÁRIO para usar as Coroutines (efeito de escrever letra a letra)
 
 public class DialogoBruxa : MonoBehaviour
 {
-    // --- REFERÊNCIAS DE UI (Vindo do Vídeo + Teu) ---
-    public GameObject PainelDialogo;
-    public TextMeshProUGUI TextoDialogo;
-    public TextMeshProUGUI NomeTexto;      // Novo: Para mostrar o nome de quem fala
-    public Image RetratoImagem;           // Novo: Para mostrar a foto do NPC
+    [Header("Configurações de UI")]
+    public GameObject painelDialogo;
+    public TMP_Text textoDialogo;
+    public TMP_Text nomeNPCTexto;
+    public Image retratoNPCImage;
 
-    // --- REFERÊNCIA DO SCRIPTABLE OBJECT (Do Vídeo) ---
-    public NPCDialogue DadosDialogo; // Arrasta o ficheiro de diálogo criado aqui
+    [Header("Ficheiro de Diálogo")]
+    public NPCDialogue dialogoDaBruxa;
 
-    // --- VARIÁVEIS DE CONTROLO ---
-    private string[] frases;
-    private int index = 0;
-    private bool EmDialogo = false;
-    private bool IsTyping = false;       // Novo: Controla se o texto ainda está a ser escrito
-    private Coroutine typingCoroutine;   // Novo: Guarda a rotina de escrita para a podermos parar
+    private int indiceAtual;
+    private bool dialogoAtivo = false;
 
-    // --- SISTEMA DE DIÁLOGO ---
-
-    public void IniciarDialogo()
+    void Start()
     {
-        if (EmDialogo) return;
-        EmDialogo = true;
-
-        // Procura o sistema de missões para decidir as falas (Lógica original tua)
-        Missoes M = Object.FindAnyObjectByType<Missoes>();
-
-        if (M != null && M.TemDiario)
-        {
-            frases = new string[] {
-                "Bruxa: Oh! Vejo que já recuperaste o meu diário!",
-                "Bruxa: Podes seguir caminho, não te incomodarei mais."
-            };
-        }
-        else
-        {
-            frases = new string[] {
-                "Bruxa: Espera! Não me destruas...",
-                "Bruxa: Desculpa, eu só quero o meu diário de volta, os sapos roubaram-no.",
-                "Bruxa: Ajuda-me a recupera-lo, pelo visto és mais forte do que eu."
-            };
-
-            if (M != null) M.AceitarMissao("Recuperar Diário");
-        }
-
-        index = 0;
-        PainelDialogo.SetActive(true);
-        BloquearPlayer(true); // Congela a Maia
-
-        // Configura os dados visuais baseados no Scriptable Object do vídeo
-        if (DadosDialogo != null)
-        {
-            NomeTexto.text = DadosDialogo.npcName;
-            RetratoImagem.sprite = DadosDialogo.npcPortrait;
-        }
-
-        // Inicia a escrita da primeira frase com o efeito letra a letra do vídeo
-        if (typingCoroutine != null) StopCoroutine(typingCoroutine);
-        typingCoroutine = StartCoroutine(TypeLine());
-    }
-
-    // Efeito Letra a Letra (Adaptado do Minuto 09:16 do vídeo)
-    private IEnumerator TypeLine()
-    {
-        IsTyping = true;
-        TextoDialogo.text = ""; // Limpa o texto anterior
-
-        // Se tiveres o Scriptable Object usa a velocidade dele, se não usa 0.04s por padrão
-        float velocidadeEscrita = (DadosDialogo != null) ? DadosDialogo.typingSpeed : 0.04f;
-
-        foreach (char letra in frases[index].ToCharArray())
-        {
-            TextoDialogo.text += letra;
-            yield return new WaitForSeconds(velocidadeEscrita);
-        }
-
-        IsTyping = false;
-    }
-
-    // Avança ou completa o texto instantaneamente se o jogador carregar no 'E' (Minuto 11:35 do vídeo)
-    public void ProximaFrase()
-    {
-        if (IsTyping)
-        {
-            // Se ainda está a escrever, para o efeito e mostra a frase toda de uma vez
-            if (typingCoroutine != null) StopCoroutine(typingCoroutine);
-            TextoDialogo.text = frases[index];
-            IsTyping = false;
-        }
-        else if (index < frases.Length - 1)
-        {
-            // Se já acabou de escrever e há mais falas, avança para a próxima
-            index++;
-            if (typingCoroutine != null) StopCoroutine(typingCoroutine);
-            typingCoroutine = StartCoroutine(TypeLine());
-        }
-        else
-        {
-            // Se não houver mais falas, fecha tudo
-            TerminarTudo();
-        }
-    }
-
-    void TerminarTudo()
-    {
-        if (typingCoroutine != null) StopCoroutine(typingCoroutine);
-        PainelDialogo.SetActive(false);
-        EmDialogo = false;
-        BloquearPlayer(false); // Devolve o controlo à Maia
-    }
-
-    // --- INTERAÇÃO COM O MUNDO (Tua lógica com correções de física) ---
-
-    void BloquearPlayer(bool bloquear)
-    {
-        Player p = Object.FindAnyObjectByType<Player>();
-        Ataque a = Object.FindAnyObjectByType<Ataque>();
-
-        if (p != null)
-        {
-            p.enabled = !bloquear;
-
-            Rigidbody2D rb = p.GetComponent<Rigidbody2D>();
-            if (rb == null) rb = p.GetComponentInParent<Rigidbody2D>();
-
-            if (rb != null && bloquear)
-            {
-                rb.linearVelocity = Vector2.zero;
-            }
-
-            Animator anim = p.GetComponentInChildren<Animator>();
-            if (anim != null && bloquear)
-            {
-                anim.Play("idle");
-            }
-        }
-
-        if (a != null) a.enabled = !bloquear;
+        if (painelDialogo != null)
+            painelDialogo.SetActive(false);
     }
 
     void Update()
     {
-        GameObject PlayerObjeto = GameObject.FindWithTag("Player");
-        if (PlayerObjeto == null) return;
-
-        if (Vector2.Distance(transform.position, PlayerObjeto.transform.position) < 4f)
+        // Se o diálogo estiver ativo, verifica o clique do rato (isto funciona mesmo com o jogo pausado)
+        if (dialogoAtivo && Mouse.current != null)
         {
-            bool apertouE = (Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame) || Input.GetKeyDown(KeyCode.E);
-
-            if (apertouE)
+            if (Mouse.current.leftButton.wasPressedThisFrame)
             {
-                if (!EmDialogo)
-                {
-                    IniciarDialogo();
-                }
-                else
-                {
-                    // Se já estiver em diálogo, o botão 'E' serve para passar à próxima frase ou autocompletar
-                    ProximaFrase();
-                }
+                AvancarFrase();
             }
         }
     }
+
+    public void AtivarDialogoPosDerrota()
+    {
+        // 1. Força a paragem do tempo
+        Time.timeScale = 0f;
+
+        // 2. PAUSA TODOS OS SONS DO JOGO (Corta o som do ataque a meio!)
+        AudioListener.pause = true;
+
+        if (dialogoDaBruxa == null) return;
+        if (dialogoAtivo) return;
+
+        dialogoAtivo = true;
+        indiceAtual = 0;
+
+        if (painelDialogo != null) painelDialogo.SetActive(true);
+
+        if (nomeNPCTexto != null) nomeNPCTexto.text = dialogoDaBruxa.npcName;
+        if (retratoNPCImage != null && dialogoDaBruxa.npcPortrait != null) retratoNPCImage.sprite = dialogoDaBruxa.npcPortrait;
+
+        ExibirFraseAtual();
+    }
+
+    void FimDoDialogo()
+    {
+        dialogoAtivo = false;
+        if (painelDialogo != null) painelDialogo.SetActive(false);
+
+        // 1. VOLTA O TEMPO AO NORMAL
+        Time.timeScale = 1f;
+
+        // 2. REATIVA OS SONS DO JOGO
+        AudioListener.pause = false;
+
+        if (dialogoDaBruxa != null && dialogoDaBruxa.quest != null && Missoes.Instance != null)
+        {
+            Missoes.Instance.AceitarMissaoSO(dialogoDaBruxa.quest);
+        }
+    }
+
+    void ExibirFraseAtual()
+    {
+        if (textoDialogo != null && dialogoDaBruxa != null && indiceAtual < dialogoDaBruxa.frases.Length)
+        {
+            textoDialogo.text = dialogoDaBruxa.frases[indiceAtual];
+        }
+    }
+
+    public void AvancarFrase()
+    {
+        indiceAtual++;
+
+        if (dialogoDaBruxa != null && indiceAtual < dialogoDaBruxa.frases.Length)
+        {
+            ExibirFraseAtual();
+        }
+        else
+        {
+            FimDoDialogo();
+        }
+    }
+
 }

@@ -15,3 +15,12 @@ MonoBehaviour:
   npcName: Bruxa
   npcPortrait: {fileID: 0}
   typingSpeed: 0.04
+  frases:
+  - "N\xE3o!! N\xE3o me mates! "
+  - "Eu estou s\xF3 a proteger-me. Todas as pessoas na aldeia odeiam-me s\xF3 por
+    ser diferente."
+  - "Ainda por cima, sapos amaldi\xE7oados roubaram-me o meu di\xE1rio."
+  - "As\xE9rio?? Podes-me ajudar? Obrigada, a s\xE9rio!!"
+  questInProgressIndex: 0
+  questCompletedIndex: 0
+  quest: {fileID: 0}
