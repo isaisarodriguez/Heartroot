@@ -116,7 +116,7 @@ public class Vida : MonoBehaviour
         {
             // DEBUG 3: Encontrou o script e vai dar a ordem para abrir a janela
             Debug.Log("[SISTEMA] DialogoBruxa encontrado com sucesso! A chamar AtivarDialogoPosDerrota().");
-            scriptDialogo.AtivarDialogoPosDerrota();
+            scriptDialogo.AtivarDialogo();
         }
         else
         {

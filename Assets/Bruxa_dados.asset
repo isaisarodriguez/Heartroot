@@ -21,6 +21,12 @@ MonoBehaviour:
     ser diferente."
   - "Ainda por cima, sapos amaldi\xE7oados roubaram-me o meu di\xE1rio."
   - "As\xE9rio?? Podes-me ajudar? Obrigada, a s\xE9rio!!"
+  - Muito obrigada, jovem!
+  - "Este di\xE1rio \xE9 muito importante para mim..."
+  - Antigamente usava-o para criar magias que ajudassem as pessoas, mas depois elas
+    viraram-me as costas.
+  - "Ent\xE3o isolei-me e parei de os fazer... Talvez seja uma boa altura de voltar
+    a faze-los... "
   questInProgressIndex: 0
   questCompletedIndex: 0
   quest: {fileID: 11400000, guid: e4f1771094bf02444b0f49f9a63ce20d, type: 2}

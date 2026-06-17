@@ -16,6 +16,7 @@ public class DialogoBruxa : MonoBehaviour
 
     private int indiceAtual;
     private bool dialogoAtivo = false;
+    private bool jogadorPorPerto = false;
 
     void Start()
     {
@@ -25,7 +26,16 @@ public class DialogoBruxa : MonoBehaviour
 
     void Update()
     {
-        // Se o diálogo estiver ativo, verifica o clique do rato (isto funciona mesmo com o jogo pausado)
+        // Alterado para detetar a tecla F
+        if (jogadorPorPerto && !dialogoAtivo && Keyboard.current != null)
+        {
+            if (Keyboard.current.fKey.wasPressedThisFrame)
+            {
+                AtivarDialogo();
+                return;
+            }
+        }
+
         if (dialogoAtivo && Mouse.current != null)
         {
             if (Mouse.current.leftButton.wasPressedThisFrame)
@@ -35,16 +45,45 @@ public class DialogoBruxa : MonoBehaviour
         }
     }
 
-    public void AtivarDialogoPosDerrota()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        // 1. Força a paragem do tempo
-        Time.timeScale = 0f;
+        if (collision.CompareTag("Player"))
+        {
+            jogadorPorPerto = true;
+            Debug.Log("[INTERAÇÃO] Carrega em 'F' para falar com a Bruxa.");
+        }
+    }
 
-        // 2. PAUSA TODOS OS SONS DO JOGO (Corta o som do ataque a meio!)
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            jogadorPorPerto = false;
+        }
+    }
+
+    public void AtivarDialogo()
+    {
+        Time.timeScale = 0f;
         AudioListener.pause = true;
 
         if (dialogoDaBruxa == null) return;
         if (dialogoAtivo) return;
+
+        // NOVO: Se a missão já existe no teu caderno antigo, garante que o QuestController também a conhece!
+        if (Missoes.Instance != null && QuestController.Instance != null && dialogoDaBruxa.quest != null)
+        {
+            string idDaMissao = dialogoDaBruxa.quest.questID;
+
+            // Se a missão está ativa no teu jogo mas não está no controlador do vídeo, sincroniza-as:
+            var questNoCaderno = Missoes.Instance.missoesAtivasSO.Find(q => q.quest.questID == idDaMissao);
+            var questNoController = QuestController.Instance.activateQuests.Find(q => q.quest.questID == idDaMissao);
+
+            if (questNoCaderno != null && questNoController == null)
+            {
+                QuestController.Instance.activateQuests.Add(questNoCaderno);
+            }
+        }
 
         dialogoAtivo = true;
         indiceAtual = 0;
@@ -62,15 +101,55 @@ public class DialogoBruxa : MonoBehaviour
         dialogoAtivo = false;
         if (painelDialogo != null) painelDialogo.SetActive(false);
 
-        // 1. VOLTA O TEMPO AO NORMAL
         Time.timeScale = 1f;
-
-        // 2. REATIVA OS SONS DO JOGO
         AudioListener.pause = false;
 
-        if (dialogoDaBruxa != null && dialogoDaBruxa.quest != null && Missoes.Instance != null)
+        if (dialogoDaBruxa != null && dialogoDaBruxa.quest != null && QuestController.Instance != null)
         {
-            Missoes.Instance.AceitarMissaoSO(dialogoDaBruxa.quest);
+            string idDaMissao = dialogoDaBruxa.quest.questID;
+
+            // 1. Verifica se a missão já foi entregue antes para não repetir
+            if (QuestController.Instance.IsQuestHandedIn(idDaMissao))
+            {
+                Debug.Log("[NPC] Esta missão já foi entregue anteriormente.");
+                return;
+            }
+
+            // 2. Procura a missão no teu caderno para ver se os objetivos estão feitos
+            bool missaoConcluidaNoCaderno = false;
+            if (Missoes.Instance != null)
+            {
+                var questNoCaderno = Missoes.Instance.missoesAtivasSO.Find(q => q.quest.questID == idDaMissao);
+
+                // Se a missão existe e a função IsCompleted() dela der true, ou se o TrueForAll der true
+                if (questNoCaderno != null)
+                {
+                    missaoConcluidaNoCaderno = questNoCaderno.IsCompleted() || questNoCaderno.objectives.TrueForAll(o => o.isCompleted);
+                }
+            }
+
+            // 3. Força a entrega se o caderno disser que está pronta ou se o QuestController achar que sim
+            if (missaoConcluidaNoCaderno || QuestController.Instance.IsQuestCompleted(idDaMissao))
+            {
+                HandleQuestCompletion(dialogoDaBruxa.quest);
+            }
+            else
+            {
+                // Se o jogador ainda não tinha a missão, aceita-a agora
+                if (Missoes.Instance != null && Missoes.Instance.missoesAtivasSO.Find(q => q.quest.questID == idDaMissao) == null)
+                {
+                    Missoes.Instance.AceitarMissaoSO(dialogoDaBruxa.quest);
+                }
+            }
+        }
+    }
+
+    private void HandleQuestCompletion(Quest quest)
+    {
+        Debug.Log($"[NPC] A entregar a missão: {quest.questName}");
+        if (QuestController.Instance != null)
+        {
+            QuestController.Instance.HandInQuest(quest.questID);
         }
     }
 
@@ -95,5 +174,4 @@ public class DialogoBruxa : MonoBehaviour
             FimDoDialogo();
         }
     }
-
 }

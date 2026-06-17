@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 public class QuestUI : MonoBehaviour
 {
+    // NOVO: Adicionado o Singleton para o QuestController o conseguir chamar (como no vídeo!)
+    public static QuestUI Instance { get; private set; }
+
     [Header("Configurações de UI (Minuto 09:05)")]
     public Transform questListContent;
     public GameObject questEntryPrefab;
@@ -14,6 +17,13 @@ public class QuestUI : MonoBehaviour
     public int testQuestAmount;
 
     private List<QuestProgress> testQuests = new();
+
+    void Awake()
+    {
+        // Configura o Singleton
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+    }
 
     void Start()
     {
@@ -48,6 +58,7 @@ public class QuestUI : MonoBehaviour
             TMP_Text questNameText = entry.transform.Find("QuestNameText")?.GetComponent<TMP_Text>();
             if (questNameText != null)
             {
+                // Usa a função IsCompleted() correta
                 string status = qProgress.IsCompleted() ? "[CONCLUÍDO] " : "[EM CURSO] ";
                 questNameText.text = status + qProgress.quest.questName;
             }

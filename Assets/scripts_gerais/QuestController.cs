@@ -1,58 +1,27 @@
-using UnityEngine;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using UnityEngine;
 
 public class QuestController : MonoBehaviour
 {
     public static QuestController Instance { get; private set; }
-    public List<QuestProgress> activateQuests = new();
-    private QuestUI questUI;
-    
-    public List<string> handinQuestIDs = new();
 
+    // Lista de missões ativas (usada ao longo do vídeo)
+    public List<QuestProgress> activateQuests = new List<QuestProgress>();
+
+    // SOLUÇÃO: Declaração da lista pedida no início do vídeo para guardar as missões entregues!
+    [HideInInspector]
+    public List<string> handInQuestIds = new List<string>();
 
     private void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
-
-        questUI = FindFirstObjectByType<QuestUI>();
-        InventoryController.Instance.OnInventoryChanged += CheckInventoryForQuests;
-    }
-
-    public void AcceptQuest(Quest quest)
-    {
-        if (IsQuestActive(quest.questID)) return;
-
-        activateQuests.Add(new QuestProgress(quest));
-
-        questUI.UpdateQuestUI();
-    }
-
-    public bool IsQuestActive(string questID) => activateQuests.Exists(q => q.questID == questID);
-
-    public void CheckInventoryForQuests()
-    {
-        Dictionary<int, int> itemCounts = InventoryController.Instance.GetItemCounts();
-
-        foreach(QuestProgress quest in activateQuests)
+        if (Instance == null)
         {
-            foreach(QuestObjective questObjective in quest.objectives)
-            {
-                if (questObjective.type != ObjectiveType.CollectItem) continue;
-                if (!int.TryParse(questObjective.objectiveID, out int itemId)) continue;
-
-                int newAmount = itemCounts.TryGetValue(itemId, out int count) ? Mathf.Min(count, questObjective.requiredAmount) : 0;
-
-                if(questObjective.currentAmount != newAmount)
-                {
-                    questObjective.currentAmount = newAmount;
-                }
-            }
+            Instance = this;
         }
-
-        questUI.UpdateQuestUI();
-
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     public bool IsQuestCompleted(string questID)
@@ -61,42 +30,37 @@ public class QuestController : MonoBehaviour
         return quest != null && quest.objectives.TrueForAll(o => o.isCompleted);
     }
 
-    public void HandInQuest(string questID)
+    // Função que o NPC usa para saber se a missão já foi entregue antes
+    public bool IsQuestHandedIn(string questID)
     {
-        //remover items
-
-        //remover quest
+        return handInQuestIds.Contains(questID);
     }
 
-    public bool RemoveRequiredItemsFromInventory (string questID)
+    public void HandInQuest(string questID)
     {
-        QuestProgress quest = activateQuests.Find(q => q.questID == questID);
-        if (quest == null) return false;
-
-        Dictionary<int, int> requiredItems = new();
-
-        //Item requirements from objectives
-        foreach(QuestObjective objective in quest.objectives)
+        // 1. Guarda que a missão foi entregue
+        if (!handInQuestIds.Contains(questID))
         {
-            if (objective.type == ObjectiveType.CollectItem && int.TryParse(objective.objectiveID, out int itemID))
-            {
-                requiredItems[itemID] = objective.requiredAmount;
-            }
+            handInQuestIds.Add(questID);
         }
 
-        Dictionary<int, int> itemCounts = InventoryController.Instance.GetItemCounts();
-        foreach(var item in requiredItems)
+        // 2. Remove das missões ativas deste controlador
+        QuestProgress quest = activateQuests.Find(q => q.quest.questID == questID);
+        if (quest != null)
         {
-            if(itemCounts.GetValueOrDefault(item.Key) < item.Value)
-            {
-                return false;
-            }
+            activateQuests.Remove(quest);
         }
 
-        foreach (var itemRequirement in requiredItems)
+        // 3. Força a remoção TOTAL da lista que a tua UI está a ler
+        if (Missoes.Instance != null && Missoes.Instance.missoesAtivasSO != null)
         {
-            //RemoveItemsFromInventory
+            Missoes.Instance.missoesAtivasSO.RemoveAll(q => q.quest.questID == questID);
         }
-        return true;
+
+        // 4. CHAMADA IGUAL AO VÍDEO: Manda a UI atualizar-se e redesenhar o ecrã limpo!
+        if (QuestUI.Instance != null)
+        {
+            QuestUI.Instance.UpdateQuestUI();
+        }
     }
 }
