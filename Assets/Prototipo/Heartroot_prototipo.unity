@@ -508,6 +508,7 @@ MonoBehaviour:
   itemPrefabs:
   - {fileID: 6610661885740433780, guid: 2b7b6f0d8f9419244ba51d404dd1d3ef, type: 3}
   - {fileID: 1237746693198662659, guid: 4d2e89a03928186489ed35a13f613f2e, type: 3}
+  - {fileID: 2091682558}
 --- !u!224 &62560146 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2002583715448612481, guid: 74e89f8a93fced649b365bf6fa5997de, type: 3}
@@ -10230,9 +10231,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6949217202134402425, guid: 32b8e044561141d4bb8899db05523c7d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2091682553}
-    - targetCorrespondingSourceObject: {fileID: 6949217202134402425, guid: 32b8e044561141d4bb8899db05523c7d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2091682552}
   m_SourcePrefab: {fileID: 100100000, guid: 32b8e044561141d4bb8899db05523c7d, type: 3}
 --- !u!1 &1510605446
 GameObject:
@@ -15858,6 +15856,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   activateQuests: []
+  handinQuestIDs: []
 --- !u!1 &1699992139
 GameObject:
   m_ObjectHideFlags: 0
@@ -44226,21 +44225,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6949217202134402425, guid: 32b8e044561141d4bb8899db05523c7d, type: 3}
   m_PrefabInstance: {fileID: 1489644493}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2091682552
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2091682542}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7cb1a931fc47784c9740d19af2f5e80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Item
-  ID: 0
-  buyPrice: 10
-  sellPriceMultiplier: 0.5
 --- !u!114 &2091682553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44253,6 +44237,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86243fb259240624bae0ad8894b83451, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemMissao
+  ID: 13
+  buyPrice: 0
+  sellPriceMultiplier: 0.5
+--- !u!114 &2091682558 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6716395847982809193, guid: 32b8e044561141d4bb8899db05523c7d, type: 3}
+  m_PrefabInstance: {fileID: 1489644493}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2091682542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7cb1a931fc47784c9740d19af2f5e80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Item
 --- !u!224 &2121761399 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2002583715448612481, guid: 74e89f8a93fced649b365bf6fa5997de, type: 3}

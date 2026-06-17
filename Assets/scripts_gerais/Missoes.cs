@@ -81,6 +81,37 @@ public class Missoes : MonoBehaviour
         NotificarUI();
     }
 
+    public void AvancarObjetivoItem(string itemID, int quantidade)
+    {
+        Debug.Log($"[SISTEMA MISSÕES] A tentar avançar objetivo com ID recebido: '{itemID}'");
+
+        foreach (var progresso in missoesAtivasSO)
+        {
+            foreach (var obj in progresso.objectives)
+            {
+                // Usamos Trim() e OrdinalIgnoreCase para ignorar espaços extras e letras maiúsculas/minúsculas falsas
+                string idMissaoLimpo = obj.objectiveID.Trim();
+                string idItemLimpo = itemID.Trim();
+
+                Debug.Log($"[SISTEMA MISSÕES] A comparar com o objetivo da Quest: '{idMissaoLimpo}'");
+
+                if (idMissaoLimpo.Equals(idItemLimpo, System.StringComparison.OrdinalIgnoreCase))
+                {
+                    obj.currentAmount += quantidade;
+                    Debug.Log($"[SISTEMA MISSÕES] Sucesso! Quantidade atualizada para: {obj.currentAmount}/{obj.requiredAmount}");
+
+                    if (obj.currentAmount >= obj.requiredAmount)
+                    {
+                        obj.currentAmount = obj.requiredAmount;
+                    }
+                }
+            }
+        }
+
+        // Força a atualização visual imediata
+        NotificarUI();
+    }
+
     public void AlternarPainel()
     {
         if (PainelMissoes == null) return;

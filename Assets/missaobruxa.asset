@@ -16,7 +16,7 @@ MonoBehaviour:
   questName: "Miss\xE3oBruxa"
   description: "Tens de recuperar o di\xE1rio da Bruxa!!"
   objectives:
-  - objectiveID: 13
+  - objectiveID: Diario
     description: "Recuperar o di\xE1rio"
     type: 0
     requiredAmount: 1

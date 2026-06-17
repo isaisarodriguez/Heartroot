@@ -1,11 +1,14 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class QuestController : MonoBehaviour
 {
     public static QuestController Instance { get; private set; }
     public List<QuestProgress> activateQuests = new();
     private QuestUI questUI;
+    
+    public List<string> handinQuestIDs = new();
 
 
     private void Awake()
@@ -14,6 +17,7 @@ public class QuestController : MonoBehaviour
         else Destroy(gameObject);
 
         questUI = FindFirstObjectByType<QuestUI>();
+        InventoryController.Instance.OnInventoryChanged += CheckInventoryForQuests;
     }
 
     public void AcceptQuest(Quest quest)
@@ -26,4 +30,73 @@ public class QuestController : MonoBehaviour
     }
 
     public bool IsQuestActive(string questID) => activateQuests.Exists(q => q.questID == questID);
+
+    public void CheckInventoryForQuests()
+    {
+        Dictionary<int, int> itemCounts = InventoryController.Instance.GetItemCounts();
+
+        foreach(QuestProgress quest in activateQuests)
+        {
+            foreach(QuestObjective questObjective in quest.objectives)
+            {
+                if (questObjective.type != ObjectiveType.CollectItem) continue;
+                if (!int.TryParse(questObjective.objectiveID, out int itemId)) continue;
+
+                int newAmount = itemCounts.TryGetValue(itemId, out int count) ? Mathf.Min(count, questObjective.requiredAmount) : 0;
+
+                if(questObjective.currentAmount != newAmount)
+                {
+                    questObjective.currentAmount = newAmount;
+                }
+            }
+        }
+
+        questUI.UpdateQuestUI();
+
+    }
+
+    public bool IsQuestCompleted(string questID)
+    {
+        QuestProgress quest = activateQuests.Find(q => q.quest.questID == questID);
+        return quest != null && quest.objectives.TrueForAll(o => o.isCompleted);
+    }
+
+    public void HandInQuest(string questID)
+    {
+        //remover items
+
+        //remover quest
+    }
+
+    public bool RemoveRequiredItemsFromInventory (string questID)
+    {
+        QuestProgress quest = activateQuests.Find(q => q.questID == questID);
+        if (quest == null) return false;
+
+        Dictionary<int, int> requiredItems = new();
+
+        //Item requirements from objectives
+        foreach(QuestObjective objective in quest.objectives)
+        {
+            if (objective.type == ObjectiveType.CollectItem && int.TryParse(objective.objectiveID, out int itemID))
+            {
+                requiredItems[itemID] = objective.requiredAmount;
+            }
+        }
+
+        Dictionary<int, int> itemCounts = InventoryController.Instance.GetItemCounts();
+        foreach(var item in requiredItems)
+        {
+            if(itemCounts.GetValueOrDefault(item.Key) < item.Value)
+            {
+                return false;
+            }
+        }
+
+        foreach (var itemRequirement in requiredItems)
+        {
+            //RemoveItemsFromInventory
+        }
+        return true;
+    }
 }
