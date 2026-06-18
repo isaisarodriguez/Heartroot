@@ -16,6 +16,7 @@ MonoBehaviour:
   npcPortrait: {fileID: 0}
   typingSpeed: 0.04
   frases:
+  - Ugh!!
   - "N\xE3o!! N\xE3o me mates! "
   - "Eu estou s\xF3 a proteger-me. Todas as pessoas na aldeia odeiam-me s\xF3 por
     ser diferente."
