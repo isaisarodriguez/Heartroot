@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class DialogoBruxa : MonoBehaviour
 {
@@ -11,10 +12,19 @@ public class DialogoBruxa : MonoBehaviour
     public TMP_Text nomeNPCTexto;
     public Image retratoNPCImage;
 
+    [Header("Pop-up de Recompensa")]
+    public GameObject painelArtefatoPopUp; // Arrasta o PainelArtefato para aqui!
+    public float tempoExibicaoPopUp = 3f;  // Tempo em segundos que o pop-up fica no ecrã
+
     [Header("Ficheiros de Diálogo")]
     public NPCDialogue dialogoDaBruxa; // Diálogo Inicial
 
-    private NPCDialogue dialogoAtivoMomento; // Guarda qual o diálogo a passar no momento
+    [Header("Recompensa da Missão")]
+    public GameObject itemRecompensaPrefab; // Arrefece aqui a Prefab Variant do teu item!
+    private bool recompensaEntregue = false;
+    private bool deveMostrarPopUpNoFim = false; // <-- NOVO: Controla o momento de exibir o painel
+
+    private NPCDialogue dialogoAtivoMomento;
     private int indiceAtual;
     private bool dialogoAtivo = false;
     private bool jogadorPorPerto = false;
@@ -22,6 +32,7 @@ public class DialogoBruxa : MonoBehaviour
     void Start()
     {
         if (painelDialogo != null) painelDialogo.SetActive(false);
+        if (painelArtefatoPopUp != null) painelArtefatoPopUp.SetActive(false);
     }
 
     void Update()
@@ -34,20 +45,36 @@ public class DialogoBruxa : MonoBehaviour
                 // Vamos ver se o jogador JÁ TEM o diário para entregar
                 if (Missoes.Instance != null && Missoes.Instance.TemDiario)
                 {
-                    // [CORREÇÃO] ID alterado para 3 (o ID real detetado na mala!)
+                    // 1. Remove o Diário Antigo
                     if (InventoryController.Instance != null)
                     {
                         InventoryController.Instance.RemoveItemsFromInventory(3, 1);
                         Debug.Log("[DIÁLOGO] Diário ID 3 removido do inventário.");
                     }
 
-                    // Conclui a missão no caderno roxo
+                    // 2. Conclui a missão no caderno roxo
                     if (QuestController.Instance != null)
                     {
                         QuestController.Instance.HandInQuest("DiarioBruxa");
                     }
 
-                    // Avisa o script Inimigo que a missão acabou
+                    // 3. ENTREGA DA RECOMPENSA (Guarda o item em segredo)
+                    if (!recompensaEntregue && InventoryController.Instance != null && itemRecompensaPrefab != null)
+                    {
+                        bool conseguiuAdicionar = InventoryController.Instance.AddItem(itemRecompensaPrefab);
+                        if (conseguiuAdicionar)
+                        {
+                            recompensaEntregue = true;
+                            deveMostrarPopUpNoFim = true; // <-- AJUSTE: Avisa que vai mostrar o pop-up no fim da conversa!
+                            Debug.Log($"[RECOMPENSA COMPLETA] O jogador recebeu o prémio: {itemRecompensaPrefab.name}!");
+                        }
+                        else
+                        {
+                            Debug.LogWarning("[RECOMPENSA ERRO] Inventário cheio! Não foi possível adicionar o item.");
+                        }
+                    }
+
+                    // 4. Avisa o script Inimigo que a missão acabou
                     Inimigo inimigoScript = GetComponent<Inimigo>();
                     if (inimigoScript == null) inimigoScript = GetComponentInChildren<Inimigo>();
 
@@ -56,7 +83,7 @@ public class DialogoBruxa : MonoBehaviour
                         inimigoScript.Invoke("FinalizarMissao", 0f);
                     }
 
-                    // Abre o diálogo de agradecimento imediatamente
+                    // 5. Abre o diálogo de agradecimento imediatamente
                     if (inimigoScript != null && inimigoScript.dialogoAgradecimento != null)
                     {
                         AtivarDialogo(inimigoScript.dialogoAgradecimento);
@@ -66,7 +93,7 @@ public class DialogoBruxa : MonoBehaviour
                         AtivarDialogo(dialogoDaBruxa);
                     }
 
-                    return; // Corta aqui para o mesmo clique do F não passar a primeira frase
+                    return;
                 }
 
                 // Se a missão já foi entregue no passado, mostra o agradecimento direto
@@ -88,7 +115,7 @@ public class DialogoBruxa : MonoBehaviour
             }
         }
 
-        // 2. AVANÇAR AS FRASES COM O 'F' (Passa os textos de forma segura)
+        // 2. AVANÇAR AS FRASES COM O 'F'
         if (dialogoAtivo && Keyboard.current != null)
         {
             if (Keyboard.current.fKey.wasPressedThisFrame)
@@ -98,12 +125,19 @@ public class DialogoBruxa : MonoBehaviour
         }
     }
 
-    // --- FUNÇÃO PRINCIPAL QUE ABRE O DIÁLOGO ---
+    // Temporizador do Pop-up (agora usa o tempo normal do jogo)
+    IEnumerator MostrarPopUpTemporario()
+    {
+        painelArtefatoPopUp.SetActive(true);
+        yield return new WaitForSeconds(tempoExibicaoPopUp);
+        painelArtefatoPopUp.SetActive(false);
+    }
+
     public void AtivarDialogo(NPCDialogue ficheiroPretendido)
     {
         if (ficheiroPretendido == null || dialogoAtivo) return;
 
-        Time.timeScale = 0f; // Pausa o jogo
+        Time.timeScale = 0f;
         AudioListener.pause = true;
 
         dialogoAtivoMomento = ficheiroPretendido;
@@ -144,8 +178,18 @@ public class DialogoBruxa : MonoBehaviour
         dialogoAtivo = false;
         if (painelDialogo != null) painelDialogo.SetActive(false);
 
-        Time.timeScale = 1f; // Despausa o jogo
+        Time.timeScale = 1f;
         AudioListener.pause = false;
+
+        // --- MUDANÇA AQUI: Ativa o pop-up assim que a caixa de diálogo fecha de vez ---
+        if (deveMostrarPopUpNoFim)
+        {
+            deveMostrarPopUpNoFim = false; // Reseta para não repetir
+            if (painelArtefatoPopUp != null)
+            {
+                StartCoroutine(MostrarPopUpTemporario());
+            }
+        }
 
         if (dialogoAtivoMomento == dialogoDaBruxa && dialogoDaBruxa.quest != null)
         {
@@ -156,7 +200,6 @@ public class DialogoBruxa : MonoBehaviour
         }
     }
 
-    // --- AQUI ESTÃO AS NOVAS FUNÇÕES QUE DETETAM A MAIA (O TRIGGER) ---
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
@@ -178,5 +221,5 @@ public class DialogoBruxa : MonoBehaviour
     void HandleQuestCompletion(Quest quest)
     {
         QuestController.Instance.HandInQuest(quest.questID);
-    } 
+    }
 }
