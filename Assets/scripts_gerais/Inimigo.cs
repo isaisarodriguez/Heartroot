@@ -12,6 +12,8 @@ public class Inimigo : MonoBehaviour
     // --- NOVA LÓGICA DE MISSÃO ---
     public float distanciaEntrega = 3f;
     private bool missaoFinalizada = false; // ESTAVA A FALTAR ESTA LINHA!
+    public NPCDialogue dialogoAgradecimento;
+
 
     // --- REFERÊNCIAS DE OBJETOS ---
     public GameObject SpriteAtaque;
@@ -42,25 +44,7 @@ public class Inimigo : MonoBehaviour
 
         float distancia = Vector2.Distance(transform.position, Player.position);
 
-        // 1. VERIFICAR ENTREGA (Lógica corrigida para usar o script Missoes)
-        if (eBruxaBoss && !missaoFinalizada)
-        {
-            // Procuramos o teu script de missões
-            Missoes gestor = Object.FindFirstObjectByType<Missoes>();
-
-            if (gestor != null && gestor.TemDiario && distancia <= distanciaEntrega)
-            {
-                // Usando o Input System novo para garantir que funciona
-                if (Keyboard.current.qKey.wasPressedThisFrame)
-                {
-                    print("feito");
-                    FinalizarMissao();
-                    return;
-                }
-            }
-        }
-
-        // 2. LÓGICA DE ATAQUE
+        // LÓGICA DE ATAQUE (Só ataca se a missão não tiver sido finalizada)
         if (!missaoFinalizada && distancia <= DistanciaAtaque)
         {
             cronometro += Time.deltaTime;
@@ -72,7 +56,6 @@ public class Inimigo : MonoBehaviour
         }
         else
         {
-            // Só fica em Idle se não estiver a atacar e a missão não tiver acabado de acabar
             if (!missaoFinalizada) anim.Play("idle");
         }
     }
@@ -97,13 +80,26 @@ public class Inimigo : MonoBehaviour
         missaoFinalizada = true;
         anim.Play("idle");
 
-        Debug.Log("Missão Concluída! Ativando Pop-up...");
-
-        // Chama o Pop-up
-        PopUpManager popup = Object.FindFirstObjectByType<PopUpManager>();
-        if (popup != null)
+        // 1. Entrega e conclui a missão no caderno roxo
+        string questIDDaBruxa = "DiarioBruxa";
+        if (QuestController.Instance != null)
         {
-            popup.MostrarPopUp();
+            QuestController.Instance.HandInQuest(questIDDaBruxa);
+        }
+
+        // 2. Chamar o teu InventoryController para limpar o Diário da mala!
+        if (InventoryController.Instance != null)
+        {
+            // ID 13 (o Diário) e quantidade 1
+            InventoryController.Instance.RemoveItemsFromInventory(13, 1);
+            Debug.Log("[MISSÃO] Sinal enviado para remover o Diário do inventário.");
+        }
+
+        // 3. Ativa o diálogo de agradecimento na Bruxa
+        DialogoBruxa scriptDialogo = GetComponent<DialogoBruxa>();
+        if (scriptDialogo != null && dialogoAgradecimento != null)
+        {
+            scriptDialogo.AtivarDialogo(dialogoAgradecimento);
         }
     }
 }

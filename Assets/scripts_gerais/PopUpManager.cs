@@ -1,27 +1,47 @@
 using UnityEngine;
-using System.Collections;
+using UnityEngine.InputSystem; // Importante para detetar o rato
 
 public class PopUpManager : MonoBehaviour
 {
-    // Arraste o objeto "Image" (o fundo que ocupa o ecrã) para aqui no Inspector
+    // Arraste o teu Quadro de Diálogo para aqui no Inspector
     public GameObject painelCompleto;
-    public float tempoDeEspera = 3f;
+    private bool dialogoAtivo = false;
 
     void Start()
     {
         // Garante que o pop-up começa desligado
-        painelCompleto.SetActive(false);
+        if (painelCompleto != null)
+            painelCompleto.SetActive(false);
+    }
+
+    void Update()
+    {
+        // Se o diálogo estiver aberto e o jogador der Clique Esquerdo no rato, fecha o diálogo
+        if (dialogoAtivo && Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            FecharPopUp();
+        }
     }
 
     public void MostrarPopUp()
     {
-        StartCoroutine(RotinaPopUp());
+        if (painelCompleto != null)
+        {
+            painelCompleto.SetActive(true);
+            dialogoAtivo = true;
+            Time.timeScale = 0f; // TRAVA O JOGO (Congela inimigos e o tempo)
+            Debug.Log("[DIÁLOGO] Diálogo aberto e jogo pausado.");
+        }
     }
 
-    IEnumerator RotinaPopUp()
+    public void FecharPopUp()
     {
-        painelCompleto.SetActive(true);
-        yield return new WaitForSeconds(tempoDeEspera);
-        painelCompleto.SetActive(false);
+        if (painelCompleto != null)
+        {
+            painelCompleto.SetActive(false);
+            dialogoAtivo = false;
+            Time.timeScale = 1f; // DESPAUSA O JOGO (Tudo volta ao normal)
+            Debug.Log("[DIÁLOGO] Diálogo fechado e jogo retomado.");
+        }
     }
 }

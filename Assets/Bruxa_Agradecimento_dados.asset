@@ -10,18 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 563cfc8f3aca7904e9b74b53554e7fa7, type: 3}
-  m_Name: Bruxa_dados
+  m_Name: Bruxa_Agradecimento_dados
   m_EditorClassIdentifier: Assembly-CSharp::NPCDialogue
   npcName: Bruxa
   npcPortrait: {fileID: 0}
   typingSpeed: 0.04
   frases:
-  - Ugh!!
-  - "N\xE3o!! N\xE3o me mates! "
-  - "Eu estou s\xF3 a proteger-me. Todas as pessoas na aldeia odeiam-me s\xF3 por
-    ser diferente."
-  - "Ainda por cima, sapos amaldi\xE7oados roubaram-me o meu di\xE1rio."
-  - "As\xE9rio?? Podes-me ajudar? Obrigada, a s\xE9rio!!"
+  - "Oh, o meu di\xE1rio! Conseguiste recuper\xE1-lo."
+  - "Ele \xE9 muito importante, para mim. Antigamente, usava-o para criar magias
+    boas..."
+  - "Mas depois, as pessoas come\xE7aram a fugir de mim e a ignorar-me."
+  - "S\xF3 por ser diferente. S\xF3 por existir. "
+  - "A s\xE9rio? Achas que devia voltar a faze-los? Seria uma boa ideia realmente..."
+  - "Obrigado jovem, tens a minha ben\xE7\xE3o."
   questInProgressIndex: 0
   questCompletedIndex: 0
-  quest: {fileID: 11400000, guid: e4f1771094bf02444b0f49f9a63ce20d, type: 2}
+  quest: {fileID: 0}
