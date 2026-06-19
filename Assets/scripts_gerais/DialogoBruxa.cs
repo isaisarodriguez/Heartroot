@@ -31,21 +31,50 @@ public class DialogoBruxa : MonoBehaviour
         {
             if (Keyboard.current.fKey.wasPressedThisFrame)
             {
-                // Vê se o jogador JÁ TEM o diário para entregar
+                // Vamos ver se o jogador JÁ TEM o diário para entregar
                 if (Missoes.Instance != null && Missoes.Instance.TemDiario)
                 {
+                    // [CORREÇÃO] ID alterado para 3 (o ID real detetado na mala!)
+                    if (InventoryController.Instance != null)
+                    {
+                        InventoryController.Instance.RemoveItemsFromInventory(3, 1);
+                        Debug.Log("[DIÁLOGO] Diário ID 3 removido do inventário.");
+                    }
+
+                    // Conclui a missão no caderno roxo
+                    if (QuestController.Instance != null)
+                    {
+                        QuestController.Instance.HandInQuest("DiarioBruxa");
+                    }
+
+                    // Avisa o script Inimigo que a missão acabou
                     Inimigo inimigoScript = GetComponent<Inimigo>();
+                    if (inimigoScript == null) inimigoScript = GetComponentInChildren<Inimigo>();
+
                     if (inimigoScript != null)
                     {
-                        inimigoScript.SendMessage("FinalizarMissao", SendMessageOptions.DontRequireReceiver);
+                        inimigoScript.Invoke("FinalizarMissao", 0f);
                     }
-                    return;
+
+                    // Abre o diálogo de agradecimento imediatamente
+                    if (inimigoScript != null && inimigoScript.dialogoAgradecimento != null)
+                    {
+                        AtivarDialogo(inimigoScript.dialogoAgradecimento);
+                    }
+                    else
+                    {
+                        AtivarDialogo(dialogoDaBruxa);
+                    }
+
+                    return; // Corta aqui para o mesmo clique do F não passar a primeira frase
                 }
 
                 // Se a missão já foi entregue no passado, mostra o agradecimento direto
                 if (QuestController.Instance != null && QuestController.Instance.IsQuestHandedIn("DiarioBruxa"))
                 {
                     Inimigo inimigoScript = GetComponent<Inimigo>();
+                    if (inimigoScript == null) inimigoScript = GetComponentInChildren<Inimigo>();
+
                     if (inimigoScript != null && inimigoScript.dialogoAgradecimento != null)
                     {
                         AtivarDialogo(inimigoScript.dialogoAgradecimento);
@@ -55,11 +84,11 @@ public class DialogoBruxa : MonoBehaviour
 
                 // Se não tem o diário nem acabou a missão, mostra o diálogo inicial normal
                 AtivarDialogo(dialogoDaBruxa);
-                return; // Corta aqui para o mesmo clique do F não avançar a primeira frase!
+                return;
             }
         }
 
-        // 2. AVANÇAR AS FRASES COM O 'F' (Em vez do clique do rato)
+        // 2. AVANÇAR AS FRASES COM O 'F' (Passa os textos de forma segura)
         if (dialogoAtivo && Keyboard.current != null)
         {
             if (Keyboard.current.fKey.wasPressedThisFrame)
@@ -145,4 +174,9 @@ public class DialogoBruxa : MonoBehaviour
             Debug.Log("[INTERAÇÃO] Maia afastou-se.");
         }
     }
+
+    void HandleQuestCompletion(Quest quest)
+    {
+        QuestController.Instance.HandInQuest(quest.questID);
+    } 
 }

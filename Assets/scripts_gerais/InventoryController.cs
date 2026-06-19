@@ -84,22 +84,47 @@ public class InventoryController : MonoBehaviour
 
     public void RemoveItemsFromInventory(int itemID, int amountToRemove)
     {
-        foreach(Transform slotTransform in inventoryPanel.transform)
+        Debug.Log($"[INVENTÁRIO] A tentar remover o item com ID: {itemID}. Quantidade pedida: {amountToRemove}");
+        bool itemEncontrado = false;
+
+        foreach (Transform slotTransform in inventoryPanel.transform)
         {
             if (amountToRemove <= 0) break;
 
             Slot slot = slotTransform.GetComponent<Slot>();
-            if (slot?.currentItem?.GetComponent<Item>() is Item item && item.ID == itemID)
+            if (slot == null || slot.currentItem == null) continue;
+
+            Item item = slot.currentItem.GetComponent<Item>();
+            if (item != null)
             {
-                int removed = Mathf.Min(amountToRemove, item.quantity);
-                
-                if(item.quantity == 0)
+                // Este log vai-nos dizer TODOS os itens que tens na mala e os seus IDs reais!
+                Debug.Log($"[INVENTÁRIO] Encontrei um item no slot. Nome do Objeto: {slot.currentItem.name} | ID deste item: {item.ID} | Quantidade no slot: {item.quantity}");
+
+                if (item.ID == itemID)
                 {
-                    Destroy(slot.currentItem);
-                    slot.currentItem = null;
+                    itemEncontrado = true;
+                    int removed = Mathf.Min(amountToRemove, item.quantity);
+
+                    item.quantity -= removed;
+                    amountToRemove -= removed;
+
+                    Debug.Log($"[INVENTÁRIO] ID Correto! A remover {removed} unidades. Restam na mala: {item.quantity}");
+
+                    if (item.quantity <= 0)
+                    {
+                        Debug.Log("[INVENTÁRIO] Quantidade chegou a 0. A destruir o objeto visual do slot!");
+                        Destroy(slot.currentItem);
+                        slot.currentItem = null;
+                    }
                 }
             }
         }
+
+        if (!itemEncontrado)
+        {
+            Debug.LogError($"[INVENTÁRIO ERRO] O diálogo pediu para apagar o ID {itemID}, mas NÃO EXISTE nenhum item com esse ID exato dentro da mala!");
+        }
+
         RebuildItemCounts();
     }
 
