@@ -1,11 +1,15 @@
 using UnityEngine;
 using System.Collections;
+using System; // <-- ADICIONADO para poder usar o Action
 
 public class Vida : MonoBehaviour
 {
     // --- ATRIBUTOS DE VIDA ---
     public float VidaMax = 100f;
     private float VidaAtual;
+
+    // --- EVENTO PARA A UI (ADICIONADO) ---
+    public event Action<float, float> OnVidaMudou;
 
     // --- ESTADOS E TEMPOS ---
     public bool eBruxa = false;
@@ -26,10 +30,12 @@ public class Vida : MonoBehaviour
     {
         VidaAtual = VidaMax;
 
+        // Atualiza a barra de vida logo no início com o valor máximo
+        if (ePlayer) OnVidaMudou?.Invoke(VidaAtual, VidaMax);
+
         if (anim == null)
             anim = GetComponentInChildren<Animator>();
 
-        // Tenta encontrar o AudioSource automaticamente se não arrastares
         if (audioSource == null)
             audioSource = GetComponent<AudioSource>();
     }
@@ -39,6 +45,9 @@ public class Vida : MonoBehaviour
         if (!PodeReceberDano) return;
 
         VidaAtual -= dano;
+
+        // SE FOR O PLAYER, avisa a UI para atualizar o Slider!
+        if (ePlayer) OnVidaMudou?.Invoke(VidaAtual, VidaMax);
 
         if (anim != null)
             anim.Play("dano");
@@ -67,10 +76,8 @@ public class Vida : MonoBehaviour
     // --- LÓGICA DE DERROTA DO PLAYER ---
     void MorrerPlayer()
     {
-        // 1. Toca o som de morte (antes da pausa)
         if (audioSource != null && somMorte != null)
         {
-            // Definimos para ignorar a pausa, caso o som seja longo
             audioSource.ignoreListenerPause = true;
             audioSource.PlayOneShot(somMorte);
         }
@@ -78,7 +85,7 @@ public class Vida : MonoBehaviour
         if (painelGameOver != null)
         {
             painelGameOver.SetActive(true);
-            Time.timeScale = 0f; // Pausa o jogo
+            Time.timeScale = 0f;
         }
 
         if (anim != null)
@@ -90,7 +97,6 @@ public class Vida : MonoBehaviour
     // --- LÓGICA ESPECÍFICA DE BOSS ---
     void FinalizarLutaBruxa()
     {
-        // DEBUG 1: Confirma se o código entrou nesta função ao zerar a vida
         Debug.Log("[SISTEMA] Vida da Bruxa chegou a zero! A iniciar FinalizarLutaBruxa()...");
 
         PodeReceberDano = false;
@@ -102,25 +108,22 @@ public class Vida : MonoBehaviour
         if (anim != null)
             anim.Play("idle");
 
-        Player p = Object.FindAnyObjectByType<Player>();
+        Player p = FindAnyObjectByType<Player>();
         if (p != null)
         {
             p.PodePassar = true;
         }
 
-        // DEBUG 2: Avisa que vai começar a procurar o script de diálogo na cena
         Debug.Log("[SISTEMA] A procurar o script DialogoBruxa na cena...");
 
-        DialogoBruxa scriptDialogo = Object.FindAnyObjectByType<DialogoBruxa>();
+        DialogoBruxa scriptDialogo = FindAnyObjectByType<DialogoBruxa>();
         if (scriptDialogo != null)
         {
-            // DEBUG 3: Encontrou o script e vai dar a ordem para abrir a janela
             Debug.Log("[SISTEMA] DialogoBruxa encontrado com sucesso! A chamar AtivarDialogoPosDerrota().");
             scriptDialogo.AtivarDialogo(scriptDialogo.dialogoDaBruxa);
         }
         else
         {
-            // Se falhar e não encontrar o script, avisa a vermelho na Console
             Debug.LogError("[ERRO] O script DialogoBruxa não foi encontrado em NENHUM objeto ativo da cena!");
         }
     }
