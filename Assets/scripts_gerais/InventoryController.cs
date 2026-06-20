@@ -63,7 +63,12 @@ public class InventoryController : MonoBehaviour
         OnInventoryChanged?.Invoke();     
     }
 
-    public Dictionary<int, int> GetItemCounts() => itemsCountCache; 
+    public Dictionary<int, int> GetItemCounts() => itemsCountCache;
+    public bool CheckItem(int itemID)
+    {
+        // Verifica se o dicionário tem o ID e se a quantidade dele é maior que 0
+        return itemsCountCache.ContainsKey(itemID) && itemsCountCache[itemID] > 0;
+    }
     public bool AddItem(GameObject itemPrefab)
     {
         //Look for an empty slot
