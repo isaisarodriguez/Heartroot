@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: ef30b81ad39c3c64eb3866553c078998
+guid: 7de4357a9974d5e45ac82eb0e13979ca
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1901627781950290384
-    second: falas_0
+      213: 2965118011325733993
+    second: saponovo_0
+  - first:
+      213: -1670497755642505159
+    second: saponovo_1
+  - first:
+      213: 3235564363645097326
+    second: saponovo_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,27 +102,84 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: falas_0
+      name: saponovo_0
       rect:
         serializedVersion: 2
-        x: 5
-        y: 1
-        width: 343
-        height: 94
+        x: 0
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0d939267460f36a10800000000000000
-      internalID: 1901627781950290384
+      spriteID: 96cde261f17362920800000000000000
+      internalID: 2965118011325733993
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: saponovo_1
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93857d4542331d8e0800000000000000
+      internalID: -1670497755642505159
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: saponovo_2
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e659afe55a807ec20800000000000000
+      internalID: 3235564363645097326
       vertices: []
       indices: 
       edges: []
@@ -125,7 +188,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: abbc3162d6382004baee6b2613cd2f5d
     internalID: 0
     vertices: []
     indices: 
@@ -133,9 +196,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":32.0,"y":32.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      falas_0: 1901627781950290384
+      saponovo_0: 2965118011325733993
+      saponovo_1: -1670497755642505159
+      saponovo_2: 3235564363645097326
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

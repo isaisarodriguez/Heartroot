@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 44d5c6b63f9af6f4ea06f4812c23a03f
+guid: bbd64ffd0e5daa54ca207f537edcd1d7
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3164252045419818948
-    second: icones_missoes_0
+      213: 1901627781950290384
+    second: falas_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -96,17 +96,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: icones_missoes_0
+      name: falas_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 60
-        height: 60
+        x: 5
+        y: 1
+        width: 338
+        height: 94
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4cf2d0b687ea9eb20800000000000000
-      internalID: 3164252045419818948
+      spriteID: 0d939267460f36a10800000000000000
+      internalID: 1901627781950290384
       vertices: []
       indices: 
       edges: []
@@ -135,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      icones_missoes_0: 3164252045419818948
+      falas_0: 1901627781950290384
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
