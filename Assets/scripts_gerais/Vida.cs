@@ -28,6 +28,11 @@ public class Vida : MonoBehaviour
 
     void Start()
     {
+       
+    }
+
+    private void Awake()
+    {
         VidaAtual = VidaMax;
 
         // Atualiza a barra de vida logo no início com o valor máximo

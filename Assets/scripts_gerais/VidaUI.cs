@@ -14,6 +14,10 @@ public class VidaUI : MonoBehaviour
         if (scriptVidaPlayer != null)
         {
             scriptVidaPlayer.OnVidaMudou += AtualizarBarra;
+
+            // --- ESTA LINHA RESOLVE O PROBLEMA ---
+            // Força a barra a começar cheia assim que o HUD aparece na tela
+            AtualizarBarra(100f, 100f);
         }
     }
 

@@ -21,7 +21,7 @@ MonoBehaviour:
   - "Eu estou s\xF3 a proteger-me. Todas as pessoas na aldeia odeiam-me s\xF3 por
     ser diferente."
   - "Ainda por cima, sapos amaldi\xE7oados roubaram-me o meu di\xE1rio."
-  - "As\xE9rio?? Podes-me ajudar? Obrigada, a s\xE9rio!!"
+  - "A s\xE9rio?? Podes-me ajudar? Obrigada!"
   questInProgressIndex: 0
   questCompletedIndex: 0
   quest: {fileID: 11400000, guid: e4f1771094bf02444b0f49f9a63ce20d, type: 2}
